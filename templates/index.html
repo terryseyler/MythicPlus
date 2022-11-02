@@ -10,25 +10,16 @@
 
 <table>
 <tr>
-  <td>Character Name</td>
-
-  <td>Grimrail Depot</td>
-
-  <td>Iron Docks</td>
-
-  <td>Mechagon Junkyard</td>
-
-  <td>Mechagon Workshop</td>
-
-  <td>Return to Karazhan: Lower</td>
-
-  <td>Return to Karazhan: Upper</td>
-
-  <td>Tazavesh: So'leah's Gambit</td>
-
-  <td>Tazavesh: Streets of Wonder</td>
-
-  <td>Total Rating</td>
+    <td>Character Name</td>
+    <td>Grimrail Depot</td>
+    <td>Iron Docks</td>
+    <td>Mechagon Junkyard</td>
+    <td>Mechagon Workshop</td>
+    <td>Return to Karazhan: Lower</td>
+    <td>Return to Karazhan: Upper</td>
+    <td>Tazavesh: So'leah's Gambit</td>
+    <td>Tazavesh: Streets of Wonder</td>
+    <td>Total Rating</td>
 </tr>
 {% for data in data %}
 
@@ -36,17 +27,14 @@
 <tr>
     <td>{{ data['name_and_server'] }}</td>
 
-
-      <td>{{ data['Grimrail Depot Fortified'] }}<br>
-         {{ data['Grimrail Depot Tyrannical'] }}</td>
-
-
+    <td>{{ data['Grimrail Depot Fortified'] }}<br>
+        {{ data['Grimrail Depot Tyrannical'] }}</td>
 
     <td>{{ data['Iron Docks Fortified'] }} <br>
         {{ data['Iron Docks Tyrannical'] }}</td>
 
     <td>{{ data['Mechagon Junkyard Fortified'] }}<br>
-    {{ data['Mechagon Junkyard Tyrannical'] }}</td>
+        {{ data['Mechagon Junkyard Tyrannical'] }}</td>
 
     <td>{{ data['Mechagon Workshop Fortified'] }}<br>
         {{ data['Mechagon Workshop Tyrannical'] }}</td>
