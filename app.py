@@ -31,3 +31,22 @@ def index():
     data = cursor.execute('select * from season_best_pivot order by total_rating desc')
     print('hi')
     return render_template('index.html',data=data)
+
+@app.route('/<region>/<realm>/<character_name>')
+def character_name(region,realm,character_name):
+    conn = create_connection()
+    cursor = conn.cursor()
+    data = cursor.execute("""select *
+                            from character_gear
+                            where name = '{}'
+                                and realm = '{}'
+                                and region = '{}'
+                                """.format(character_name,realm,region))
+    character = cursor.execute("""select *
+                            from character_gear
+                            where name = '{}'
+                                and realm = '{}'
+                                and region = '{}'
+    
+                                """.format(character_name,realm,region)).fetchone()
+    return render_template('character.html',data=data,character=character)

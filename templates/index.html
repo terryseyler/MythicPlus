@@ -21,11 +21,11 @@
     <td>Tazavesh: Streets of Wonder</td>
     <td>Total Rating</td>
 </tr>
+
 {% for data in data %}
 
-
 <tr>
-    <td>{{ data['name_and_server'] }}</td>
+    <td><a href="{{url_for('character_name',character_name=data['name'],realm=data['realm'],region=data['region'])}}">{{ data['name'] }} - {{data['realm']}}</a></td>
 
     <td>{{ data['Grimrail Depot Fortified'] }}<br>
         {{ data['Grimrail Depot Tyrannical'] }}</td>
@@ -52,6 +52,8 @@
         {{ data['Tazavesh: Streets of Wonder Tyrannical'] }}</td>
 
    <td>{{ data['total_rating'] }}</td>
+
 {% endfor %}
+
 </table>
 </html>

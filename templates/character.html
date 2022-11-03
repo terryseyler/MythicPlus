@@ -1,0 +1,14 @@
+<!doctype html>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<html>
+
+<h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }}</h3>
+<table>
+{% for item in data %}
+<tr>
+  <td>{{ item['item_slot'] }}</td>
+  <td>{{ item['item_name'] }}</td>
+  <td>{{ item['item_level'] }}</td>
+
+{% endfor %}
