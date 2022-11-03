@@ -46,7 +46,7 @@ def character_name(region,realm,character_name):
     conn = create_connection()
     cursor = conn.cursor()
 
-    distinct_crawl_dates = cursor.execute("""select distinct last_crawled_at,equipped_item_level
+    distinct_crawl_dates = cursor.execute("""select distinct active_spec_role,active_spec_name,last_crawled_at,equipped_item_level
                                         from character_gear
                                         where name = '{}'
                                             and realm = '{}'

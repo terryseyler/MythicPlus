@@ -3,11 +3,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <html>
 
-<h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }}</h3>
+<h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }} - {{ character['active_spec_name'] }}</h3>
 
 {% for date in distinct_crawl_dates %}
 
-<h4> {{date['equipped_item_level']}} Item level as of {{date['last_crawled_at'] }}</h4>
+<h4>{{ date['active_spec_name'] }} - {{date['equipped_item_level']}} Item level as of {{date['last_crawled_at'] }}</h4>
 
 <table>
 {% for item in data %}

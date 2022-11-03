@@ -86,8 +86,11 @@ for char in character_json:
                         ,unique_key
                         ,tyr_or_fort
                         ,type
-                        ,rating )
-                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        ,rating
+                        ,active_spec_name
+                        ,active_spec_role
+                        )
+                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                        (j['name']
                         ,j['region']
                         ,j['realm']
@@ -106,6 +109,8 @@ for char in character_json:
                         ,dungeon['affixes'][0]['name']
                         ,dungeon['type']
                         ,dungeon['rating']
+                        ,j['active_spec_name']
+                        ,j['active_spec_role']
                             )
             )
             conn.commit()
@@ -128,8 +133,10 @@ for char in character_json:
                         ,URL
                         ,unique_key
                         ,tyr_or_fort
+                        ,active_spec_name
+                        ,active_spec_role
                          )
-                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                        (j['name']
                         ,j['region']
                         ,j['realm']
@@ -146,6 +153,8 @@ for char in character_json:
                         ,dungeon['url']
                         ,j['name'] + '-' + j['region'] + '-' + j['realm'] + '-' + dungeon['completed_at']
                         ,dungeon['affixes'][0]['name']
+                        ,j['active_spec_name']
+                        ,j['active_spec_role']
 
                             )
                     )
@@ -162,8 +171,10 @@ for char in character_json:
                         ,item_level
                         ,item_name
                         ,unique_key
+                        ,active_spec_name
+                        ,active_spec_role
                      )
-                    VALUES (?,?,?,?,?,?,?,?,?)""",
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
                     (j['name']
                     ,j['region']
                     ,j['realm']
@@ -173,6 +184,8 @@ for char in character_json:
                      ,j['gear']['items'][item]['item_level']
                      ,j['gear']['items'][item]['name']
                      ,j['name']+j['realm']+j['region']+item+j['gear']['items'][item]['name']+str(j['gear']['items'][item]['item_level'])+str(j['gear']['item_level_equipped'])
+                        ,j['active_spec_name']
+                        ,j['active_spec_role']
 
                         )
                     )
