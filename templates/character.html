@@ -4,11 +4,21 @@
 <html>
 
 <h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }}</h3>
+
+{% for date in distinct_crawl_dates %}
+
+<h4> {{date['equipped_item_level']}} Item level as of {{date['last_crawled_at'] }}</h4>
+
 <table>
 {% for item in data %}
+{% if item['last_crawled_at'] == date['last_crawled_at'] %}
+
 <tr>
   <td>{{ item['item_slot'] }}</td>
   <td>{{ item['item_name'] }}</td>
   <td>{{ item['item_level'] }}</td>
+
+{% endif %}
+{% endfor %}
 
 {% endfor %}

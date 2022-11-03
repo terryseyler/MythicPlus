@@ -36,17 +36,28 @@ def index():
 def character_name(region,realm,character_name):
     conn = create_connection()
     cursor = conn.cursor()
-    data = cursor.execute("""select *
+
+    distinct_crawl_dates = cursor.execute("""select distinct last_crawled_at,equipped_item_level
+                                        from character_gear
+                                        where name = '{}'
+                                            and realm = '{}'
+                                            and region = '{}'
+                                        order by last_crawled_at desc
+                                            """.format(character_name,realm,region)).fetchall()
+
+
+    results = cursor.execute("""select *
                             from character_gear
                             where name = '{}'
                                 and realm = '{}'
                                 and region = '{}'
                                 """.format(character_name,realm,region))
+
+    data = results.fetchall()
     character = cursor.execute("""select *
                             from character_gear
                             where name = '{}'
                                 and realm = '{}'
                                 and region = '{}'
-    
                                 """.format(character_name,realm,region)).fetchone()
-    return render_template('character.html',data=data,character=character)
+    return render_template('character.html',data=data,character=character,distinct_crawl_dates=distinct_crawl_dates)
