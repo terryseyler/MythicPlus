@@ -1,3 +1,5 @@
 
 *.pyc
 *.db
+mplus.db
+*.ipynb_checkpoints
