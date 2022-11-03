@@ -35,7 +35,7 @@ def create_connection():
         except Error as e:
             print(e)
 
-with open('characters.txt') as f:
+with open('/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/scripts/characters.txt') as f:
     data = f.read()
 f.close()
 
