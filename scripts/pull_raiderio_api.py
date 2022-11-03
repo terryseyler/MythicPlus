@@ -1,3 +1,7 @@
+#30 * * * * /Users/terryseyler/opt/anaconda3/bin/python "/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/scripts/pull_raiderio_api.py"
+
+
+
 import requests
 import sys
 import json
@@ -5,21 +9,42 @@ import pandas as pd
 import urllib3
 import numpy as np
 import sqlite3
+from sqlite3 import Error
 urllib3.disable_warnings()
 pd.set_option('display.max_colwidth', None)
 
-db_file='/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/mplus.db'
+
+def create_connection():
+    """ create a database connection to a SQLite database """
+    conn = None
+    try:
+        print('trying python anywhere path')
+        file ="/home/terrysey/MythicPlus/mplus.db"
+        conn = sqlite3.connect(file)
+        #engine = create_engine("sqlite:///"+file
+        return conn
+
+    except Error as e:
+        print(e)
+        try:
+            print('trying local path')
+            file='/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/mplus.db'
+            conn = sqlite3.connect(file)
+            #engine = create_engine("sqlite:///"+file)
+            return conn
+        except Error as e:
+            print(e)
 
 with open('characters.txt') as f:
     data = f.read()
 f.close()
-      
+
 # reconstructing the data as a dictionary
 character_json = json.loads(data)
 
 
 for char in character_json:
-    conn=sqlite3.connect(db_file)
+    conn=create_connection()
     r = requests.get('https://raider.io/api/v1/characters/profile?region={}&realm={}&name={}&fields=mythic_plus_best_runs%2Cmythic_plus_highest_level_runs%2Cmythic_plus_alternate_runs%2Cgear%2Cmythic_plus_weekly_highest_level_runs%2Cmythic_plus_previous_weekly_highest_level_runs'.format(char['region'],char['server'],char['name']))
     affixes=[]
     if r.status_code == 200:
@@ -31,9 +56,9 @@ for char in character_json:
         for dungeon in j['mythic_plus_best_runs']:
             dungeon['type'] = 'primary'
             dungeon['rating'] = dungeon['score'] * 1.5
-        
+
         all_best_runs = j['mythic_plus_best_runs'] + j['mythic_plus_alternate_runs']
-        
+
         for i,dungeon in enumerate(all_best_runs):
             all_best_runs[i]['affix_names'] = [affix['name'] for affix in dungeon['affixes']]
         #18 columns
@@ -43,24 +68,24 @@ for char in character_json:
         #insert into mythic_plus_best_runs
         for dungeon in all_best_runs:
             conn.execute(
-                      """INSERT OR IGNORE INTO mythic_plus_best_runs ( 
+                      """INSERT OR IGNORE INTO mythic_plus_best_runs (
                         name
-                        ,region 
-                        ,realm 
-                        ,dungeon 
-                        ,short_name 
-                        ,mythic_level 
+                        ,region
+                        ,realm
+                        ,dungeon
+                        ,short_name
+                        ,mythic_level
                         ,completed_at
-                        ,clear_time_ms 
-                        ,num_keystone_upgrades 
-                        ,map_challenge_mode_id 
-                        ,zone_id 
-                        ,score 
-                        ,affixes 
-                        ,URL  
-                        ,unique_key  
-                        ,tyr_or_fort 
-                        ,type 
+                        ,clear_time_ms
+                        ,num_keystone_upgrades
+                        ,map_challenge_mode_id
+                        ,zone_id
+                        ,score
+                        ,affixes
+                        ,URL
+                        ,unique_key
+                        ,tyr_or_fort
+                        ,type
                         ,rating )
                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                        (j['name']
@@ -86,23 +111,23 @@ for char in character_json:
             conn.commit()
         for dungeon in all_mythic_dungeons:
             conn.execute(
-                      """INSERT OR IGNORE INTO all_mythic_plus_runs ( 
+                      """INSERT OR IGNORE INTO all_mythic_plus_runs (
                         name
-                        ,region 
-                        ,realm 
-                        ,dungeon 
-                        ,short_name 
-                        ,mythic_level 
+                        ,region
+                        ,realm
+                        ,dungeon
+                        ,short_name
+                        ,mythic_level
                         ,completed_at
-                        ,clear_time_ms 
-                        ,num_keystone_upgrades 
-                        ,map_challenge_mode_id 
-                        ,zone_id 
-                        ,score 
-                        ,affixes 
-                        ,URL  
-                        ,unique_key  
-                        ,tyr_or_fort 
+                        ,clear_time_ms
+                        ,num_keystone_upgrades
+                        ,map_challenge_mode_id
+                        ,zone_id
+                        ,score
+                        ,affixes
+                        ,URL
+                        ,unique_key
+                        ,tyr_or_fort
                          )
                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                        (j['name']
@@ -127,12 +152,12 @@ for char in character_json:
             conn.commit()
         for item in j['gear']['items']:
             conn.execute(
-                    """INSERT OR IGNORE INTO character_gear ( 
+                    """INSERT OR IGNORE INTO character_gear (
                         name
-                        ,region 
-                        ,realm 
+                        ,region
+                        ,realm
                         ,last_crawled_at
-                        ,equipped_item_level 
+                        ,equipped_item_level
                         ,item_slot
                         ,item_level
                         ,item_name
@@ -157,7 +182,7 @@ for char in character_json:
     conn.close()
 
 print('updating pivot')
-conn=sqlite3.connect(db_file)
+conn=create_connection()
 df_db = pd.read_sql('select * from mythic_plus_best_runs',conn)
 df_db['name_and_server'] = df_db['name'] +'-'+df_db['realm']
 df_db['dungeon_and_affix'] = df_db['dungeon'] + ' ' + df_db['tyr_or_fort']
