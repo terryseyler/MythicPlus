@@ -13,7 +13,7 @@ def create_connection():
     """ create a database connection to a SQLite database """
     conn = None
     try:
-        file ="mplus.db"
+        file ="/home/terrysey/MythicPlus/mplus.db"
         conn = sqlite3.connect(file
         ,detect_types=sqlite3.PARSE_DECLTYPES)
         conn.row_factory=sqlite3.Row
@@ -22,6 +22,15 @@ def create_connection():
 
     except Error as e:
         print(e)
+        try:
+            file="mplus.db"
+            conn = sqlite3.connect(file
+            ,detect_types=sqlite3.PARSE_DECLTYPES)
+            conn.row_factory=sqlite3.Row
+            engine = create_engine("sqlite:///"+file)
+            return conn
+        except Error as e:
+            print(e)
 
 
 @app.route('/')
