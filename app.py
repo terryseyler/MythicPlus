@@ -27,7 +27,7 @@ def create_connection():
             conn = sqlite3.connect(file
             ,detect_types=sqlite3.PARSE_DECLTYPES)
             conn.row_factory=sqlite3.Row
-            engine = create_engine("sqlite:///"+file)
+            #engine = create_engine("sqlite:///"+file)
             return conn
         except Error as e:
             print(e)
