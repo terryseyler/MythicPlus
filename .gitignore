@@ -4,3 +4,4 @@
 mplus.db
 *.ipynb_checkpoints
 .DS_Store
+.vs/slnx.sqlite
