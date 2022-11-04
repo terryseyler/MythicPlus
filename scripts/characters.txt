@@ -5,6 +5,11 @@
      ,"region":"us"
     },
     {
+    "name":"sulmasol"
+     ,"server":"illidan"
+     ,"region":"us"
+    },
+    {
     "name":"mcgov"
      ,"server":"illidan"
      ,"region":"us"
