@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <html>
 
-<h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }} - {{ character['active_spec_name'] }}</h3>
+<h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }} - {{ character['active_spec_name'] }} - {{character['class']}}</h3>
 
 {% for date in distinct_crawl_dates %}
 
@@ -17,6 +17,14 @@
   <td>{{ item['item_slot'] }}</td>
   <td>{{ item['item_name'] }}</td>
   <td>{{ item['item_level'] }}</td>
+
+{% if item['slot_item_level_change'] > 0 %}
+  <td>&uarr; {{ item['slot_item_level_change']}}</td>
+{% elif item['slot_item_level_change'] > 0 %}
+  <td>&darr;{{ item['slot_item_level_change']}}</td>
+{% else %}
+  <td>&harr;{{ item['slot_item_level_change']}}</td>
+{% endif %}
 
 
 {% endif %}

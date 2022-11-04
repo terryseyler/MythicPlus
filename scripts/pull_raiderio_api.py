@@ -18,16 +18,16 @@ def create_connection():
     """ create a database connection to a SQLite database """
     conn = None
     try:
-        print('trying python anywhere path')
+        #print('trying python anywhere path')
         file ="/home/terrysey/MythicPlus/mplus.db"
         conn = sqlite3.connect(file)
         #engine = create_engine("sqlite:///"+file
         return conn
 
     except Error as e:
-        print(e)
+        #print(e)
         try:
-            print('trying local path')
+           # print('trying local path')
             file='/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/mplus.db'
             conn = sqlite3.connect(file)
             #engine = create_engine("sqlite:///"+file)
@@ -69,6 +69,14 @@ for char in character_json:
         for i,dungeon in enumerate(all_mythic_dungeons):
             all_mythic_dungeons[i]['affix_names'] = [affix['name'] for affix in dungeon['affixes']]
         #insert into mythic_plus_best_runs
+        
+        sum_item_level = 0
+        item_count = 0
+        for item in j['gear']['items']:
+            sum_item_level = sum_item_level + j['gear']['items'][item]['item_level']
+            if item != 'shirt':
+                item_count = item_count + 1
+        derived_item_level = sum_item_level / item_count
         for dungeon in all_best_runs:
             conn.execute(
                       """INSERT OR IGNORE INTO mythic_plus_best_runs (
@@ -92,8 +100,9 @@ for char in character_json:
                         ,rating
                         ,active_spec_name
                         ,active_spec_role
+                        ,class
                         )
-                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                        (j['name']
                         ,j['region']
                         ,j['realm']
@@ -114,6 +123,7 @@ for char in character_json:
                         ,dungeon['rating']
                         ,j['active_spec_name']
                         ,j['active_spec_role']
+                        ,j['class']
                             )
             )
             conn.commit()
@@ -138,8 +148,9 @@ for char in character_json:
                         ,tyr_or_fort
                         ,active_spec_name
                         ,active_spec_role
+                        ,class
                          )
-                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                        (j['name']
                         ,j['region']
                         ,j['realm']
@@ -158,6 +169,7 @@ for char in character_json:
                         ,dungeon['affixes'][0]['name']
                         ,j['active_spec_name']
                         ,j['active_spec_role']
+                        ,j['class']
 
                             )
                     )
@@ -176,8 +188,10 @@ for char in character_json:
                         ,unique_key
                         ,active_spec_name
                         ,active_spec_role
+                        ,derived_item_level
+                        ,class
                      )
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                     (j['name']
                     ,j['region']
                     ,j['realm']
@@ -186,10 +200,11 @@ for char in character_json:
                      ,item
                      ,j['gear']['items'][item]['item_level']
                      ,j['gear']['items'][item]['name']
-                     ,j['name']+j['realm']+j['region']+item+j['gear']['items'][item]['name']+str(j['gear']['items'][item]['item_level'])+str(j['gear']['item_level_equipped'])
+                     ,j['name']+j['realm']+j['region']+item+j['gear']['items'][item]['name']+str(j['gear']['items'][item]['item_level'])+str(derived_item_level)
                         ,j['active_spec_name']
                         ,j['active_spec_role']
-
+                        ,derived_item_level
+                     ,j['class']
                         )
                     )
             conn.commit()
@@ -223,5 +238,25 @@ df_season_best.replace(np.nan,'',inplace=True)
 df_season_best['total_rating'] = df_total_rating['total_rating']
 
 df_season_best.to_sql('season_best_pivot',conn,if_exists='replace')
+
+#update the gear table with increases
+
+conn.execute("""with temp_table as
+            (
+            select *
+            ,item_level - LEAD(item_level,1,0) over (partition by name,realm,region,item_slot order by last_crawled_at desc) as item_level_change
+            from character_gear
+            )
+            update character_gear set slot_item_level_change=temp.item_level_change
+            from temp_table temp
+            where temp.name = character_gear.name
+                and temp.region = character_gear.region
+                and temp.realm = character_gear.realm
+                and temp.item_slot = character_gear.item_slot
+                and temp.item_name = character_gear.item_name
+                and temp.item_level = character_gear.item_level
+                and temp.derived_item_level = character_gear.derived_item_level
+            """)
+print("gear table updated")
 conn.close()
 print('pivot updated')
