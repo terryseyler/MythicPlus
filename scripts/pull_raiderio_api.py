@@ -38,7 +38,10 @@ def create_connection():
 with open('/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/scripts/characters.txt') as f:
     data = f.read()
 f.close()
-
+conn = create_connection()
+conn.execute('delete from mythic_plus_best_runs')
+conn.commit()
+conn.close()
 # reconstructing the data as a dictionary
 character_json = json.loads(data)
 
