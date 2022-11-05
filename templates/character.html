@@ -20,10 +20,10 @@
 
 {% if item['slot_item_level_change'] > 0 %}
   <td>&uarr; {{ item['slot_item_level_change']}}</td>
-{% elif item['slot_item_level_change'] > 0 %}
+{% elif item['slot_item_level_change'] < 0 %}
   <td>&darr;{{ item['slot_item_level_change']}}</td>
 {% else %}
-  <td>&harr;{{ item['slot_item_level_change']}}</td>
+  <td>&harr;</td>
 {% endif %}
 
 

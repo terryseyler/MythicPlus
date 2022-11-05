@@ -48,10 +48,21 @@ character_json = json.loads(data)
 
 for char in character_json:
     conn=create_connection()
+    conn.execute(
+    """insert or IGNORE into base_characters(
+        name
+        ,realm
+        ,region
+        ,unique_key
+        )
+        values(?,?,?,?)"""
+        ,(char['name'],char['server'],char['region'],char['name']+char['server']+char['region'])
+        )
+    print('{} being pulled'.format(char['name']))
     r = requests.get('https://raider.io/api/v1/characters/profile?region={}&realm={}&name={}&fields=mythic_plus_best_runs%2Cmythic_plus_highest_level_runs%2Cmythic_plus_alternate_runs%2Cgear%2Cmythic_plus_weekly_highest_level_runs%2Cmythic_plus_previous_weekly_highest_level_runs'.format(char['region'],char['server'],char['name']))
     affixes=[]
     if r.status_code == 200:
-        print('{} being pulled'.format(char['name']))
+        print('{} api pulled'.format(char['name']))
         j = json.loads(r.text)
         for dungeon in j['mythic_plus_alternate_runs']:
             dungeon['type'] = 'alt'
@@ -69,7 +80,7 @@ for char in character_json:
         for i,dungeon in enumerate(all_mythic_dungeons):
             all_mythic_dungeons[i]['affix_names'] = [affix['name'] for affix in dungeon['affixes']]
         #insert into mythic_plus_best_runs
-        
+
         sum_item_level = 0
         item_count = 0
         for item in j['gear']['items']:
