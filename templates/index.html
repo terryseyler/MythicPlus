@@ -1,5 +1,5 @@
 <!doctype html>
-
+<!---next need to update this to loop thru column names instead of hardcoded'!-->
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <html>
 
@@ -11,6 +11,8 @@
 <table>
 <tr>
     <td>Character Name</td>
+
+<!---for distinct column names!-->
     <td>Grimrail Depot</td>
     <td>Iron Docks</td>
     <td>Mechagon Junkyard</td>
@@ -20,13 +22,14 @@
     <td>Tazavesh: So'leah's Gambit</td>
     <td>Tazavesh: Streets of Wonder</td>
     <td>Total Rating</td>
+<!---end for!-->
 </tr>
 
 {% for data in data %}
 
 <tr>
     <td><a href="{{url_for('character_name',character_name=data['name'],realm=data['realm'],region=data['region'])}}">{{ data['name'] }} - {{data['realm']}}</a></td>
-
+    
     <td>{{ data['Grimrail Depot Fortified'] }}<br>
         {{ data['Grimrail Depot Tyrannical'] }}</td>
 

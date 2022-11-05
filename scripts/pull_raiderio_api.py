@@ -248,7 +248,9 @@ df_season_best.replace(np.nan,'',inplace=True)
 
 df_season_best['total_rating'] = df_total_rating['total_rating']
 
-df_season_best.to_sql('season_best_pivot',conn,if_exists='replace')
+conn.execute('delete from season_best_pivot')
+conn.commit()
+df_season_best.to_sql('season_best_pivot',conn,if_exists='append')
 
 #update the gear table with increases
 

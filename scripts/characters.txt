@@ -51,7 +51,7 @@
     },
      {
     "name":"Astaruid"
-     ,"server":"illidan"
+     ,"server":"Illidan"
      ,"region":"us"
     },
     {"name":"Terry"
