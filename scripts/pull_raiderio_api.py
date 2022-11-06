@@ -51,9 +51,17 @@ try:
         data = f.read()
     f.close()
 except:
-    with open('C:\\Users\\tlsey\\git\\MythicPlus\\scripts\\characters.txt') as f:
-        data = f.read()
-    f.close()
+    try:
+        with open('C:\\Users\\tlsey\\git\\MythicPlus\\scripts\\characters.txt') as f:
+            data = f.read()
+        f.close()
+    except:
+        try:
+            with open("/home/terrysey/MythicPlus/scripts/characters.txt") as f:
+                data = f.read()
+            f.close()
+        except Error as e:
+            print(e)
 conn = create_connection()
 conn.execute('delete from mythic_plus_best_runs')
 conn.commit()
