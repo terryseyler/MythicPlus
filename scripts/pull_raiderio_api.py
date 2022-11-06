@@ -275,11 +275,44 @@ print("updating scoreboard changes")
 
 conn.execute("""update season_best_pivot
             set daily_rating_change = round(season_best_pivot.total_rating - pr.total_rating,1)
+
+            , pr_GMBT_for = pr."Tazavesh: So\'leah\'s Gambit Fortified"
+            , pr_GMBT_tyr = pr."Tazavesh: So\'leah\'s Gambit Tyrannical"
+
+            , pr_STRT_for = pr."Tazavesh: Streets of Wonder Fortified"
+            , pr_STRT_tyr = pr."Tazavesh: Streets of Wonder Tyrannical"
+
+            , pr_UPPR_for = pr."Return to Karazhan: Upper Fortified"
+            , pr_UPPR_tyr = pr."Return to Karazhan: Upper Tyrannical"
+
+            , pr_LOWR_for = pr."Return to Karazhan: Lower Fortified"
+            , pr_LOWR_tyr = pr."Return to Karazhan: Lower Tyrannical"
+
+            , pr_ID_for = pr."Iron Docks Fortified"
+            , pr_ID_tyr = pr."Iron Docks Tyrannical"
+
+            , pr_GD_for = pr."Grimrail Depot Fortified"
+            , pr_GD_tyr = pr."Grimrail Depot Tyrannical"
+
+            , pr_WKSP_for = pr."Mechagon Workshop Fortified"
+            , pr_WKSP_tyr = pr."Mechagon Workshop Tyrannical"
+
+            , pr_JUNK_for = pr."Mechagon Junkyard Fortified"
+            , pr_JUNK_tyr = pr."Mechagon Junkyard Tyrannical"
+
             from season_best_pivot pr
             where pr.name = season_best_pivot.name
             and pr.realm = season_best_pivot.realm
             and pr.region = season_best_pivot.region
-            and date(pr.scoreboard_date) = date(season_best_pivot.scoreboard_date, "-1 days")
+            and date(pr.scoreboard_date) = date(season_best_pivot.scoreboard_date,
+                                            case when strftime("%w",season_best_pivot.scoreboard_date) = "0" then "-6 "
+                                            when strftime("%w",season_best_pivot.scoreboard_date) = "1" then  "-7 "
+                                            when strftime("%w",season_best_pivot.scoreboard_date) = "2" then "-1 "
+                                            when strftime("%w",season_best_pivot.scoreboard_date) = "3" then "-2 "
+                                            when strftime("%w",season_best_pivot.scoreboard_date) = "4" then "-3 "
+                                            when strftime("%w",season_best_pivot.scoreboard_date) = "5" then  "-4 "
+                                            when strftime("%w",season_best_pivot.scoreboard_date) = "6" then "-5 "
+                                            end || "days")
             """
             )
 conn.commit()
