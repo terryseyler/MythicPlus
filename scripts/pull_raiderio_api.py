@@ -274,7 +274,7 @@ conn.commit()
 print("updating scoreboard changes")
 
 conn.execute("""update season_best_pivot
-            set daily_rating_change = season_best_pivot.total_rating - pr.total_rating
+            set daily_rating_change = round(season_best_pivot.total_rating - pr.total_rating,1)
             from season_best_pivot pr
             where pr.name = season_best_pivot.name
             and pr.realm = season_best_pivot.realm
