@@ -50,7 +50,9 @@ def index():
     data = cursor.execute("""select * from base_characters base left join season_best_pivot piv
     on upper(base.name) = upper(piv.name)
     and upper(base.realm) = upper(piv.realm)
-    and upper(base.region) = upper(piv.region) order by total_rating desc""")
+    and upper(base.region) = upper(piv.region)
+    where scoreboard_date = (select max(scoreboard_date) from season_best_pivot)
+    order by total_rating desc""")
     print('hi')
     return render_template('index.html',data=data)
 

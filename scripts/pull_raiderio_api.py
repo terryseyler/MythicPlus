@@ -12,32 +12,48 @@ import sqlite3
 from sqlite3 import Error
 urllib3.disable_warnings()
 pd.set_option('display.max_colwidth', None)
+import datetime as dt
 
 
 def create_connection():
     """ create a database connection to a SQLite database """
     conn = None
     try:
-        #print('trying python anywhere path')
         file ="/home/terrysey/MythicPlus/mplus.db"
-        conn = sqlite3.connect(file)
-        #engine = create_engine("sqlite:///"+file
+        conn = sqlite3.connect(file
+        ,detect_types=sqlite3.PARSE_DECLTYPES)
+        conn.row_factory=sqlite3.Row
+        #engine = create_engine("sqlite:///"+file)
         return conn
 
     except Error as e:
         #print(e)
         try:
-           # print('trying local path')
-            file='/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/mplus.db'
-            conn = sqlite3.connect(file)
+            file="/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/mplus.db"
+            conn = sqlite3.connect(file
+            ,detect_types=sqlite3.PARSE_DECLTYPES)
+            conn.row_factory=sqlite3.Row
             #engine = create_engine("sqlite:///"+file)
             return conn
         except Error as e:
-            print(e)
-
-with open('/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/scripts/characters.txt') as f:
-    data = f.read()
-f.close()
+            #print(e)
+            try:
+                file="C:/Users/tlsey/git/MythicPlus/mplus.db"
+                conn = sqlite3.connect(file
+                ,detect_types=sqlite3.PARSE_DECLTYPES)
+                conn.row_factory=sqlite3.Row
+                #engine = create_engine("sqlite:///"+file)
+                return conn
+            except Error as e:
+                print(e)
+try:
+    with open('/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/scripts/characters.txt') as f:
+        data = f.read()
+    f.close()
+except:
+    with open('C:\\Users\\tlsey\\git\\MythicPlus\\scripts\\characters.txt') as f:
+        data = f.read()
+    f.close()
 conn = create_connection()
 conn.execute('delete from mythic_plus_best_runs')
 conn.commit()
@@ -247,13 +263,26 @@ df_season_best = df_db.pivot(index=['name','realm','region']
 df_season_best.replace(np.nan,'',inplace=True)
 
 df_season_best['total_rating'] = df_total_rating['total_rating']
+now_string = dt.datetime.now().strftime("%Y-%m-%d")
+df_season_best['scoreboard_date'] =now_string
 
-conn.execute('delete from season_best_pivot')
+conn.execute('delete from season_best_pivot where scoreboard_date = "{}"'.format(now_string))
 conn.commit()
 df_season_best.to_sql('season_best_pivot',conn,if_exists='append')
-
+conn.commit()
 #update the gear table with increases
+print("updating scoreboard changes")
 
+conn.execute("""update season_best_pivot
+            set daily_rating_change = season_best_pivot.total_rating - pr.total_rating
+            from season_best_pivot pr
+            where pr.name = season_best_pivot.name
+            and pr.realm = season_best_pivot.realm
+            and pr.region = season_best_pivot.region
+            and date(pr.scoreboard_date) = date(season_best_pivot.scoreboard_date, "-1 days")
+            """
+            )
+conn.commit()
 conn.execute("""with temp_table as
             (
             select *
@@ -271,5 +300,6 @@ conn.execute("""with temp_table as
                 and temp.derived_item_level = character_gear.derived_item_level
             """)
 print("gear table updated")
+conn.commit()
 conn.close()
 print('pivot updated')

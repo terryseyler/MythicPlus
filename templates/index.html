@@ -22,6 +22,7 @@
     <td>Tazavesh: So'leah's Gambit</td>
     <td>Tazavesh: Streets of Wonder</td>
     <td>Total Rating</td>
+    <td>Daily Rating Change</td>
 <!---end for!-->
 </tr>
 
@@ -29,7 +30,7 @@
 
 <tr>
     <td><a href="{{url_for('character_name',character_name=data['name'],realm=data['realm'],region=data['region'])}}">{{ data['name'] }} - {{data['realm']}}</a></td>
-    
+
     <td>{{ data['Grimrail Depot Fortified'] }}<br>
         {{ data['Grimrail Depot Tyrannical'] }}</td>
 
@@ -55,6 +56,14 @@
         {{ data['Tazavesh: Streets of Wonder Tyrannical'] }}</td>
 
    <td>{{ data['total_rating'] }}</td>
+
+   {% if data['daily_rating_change'] > 0 %}
+     <td>&uarr; {{ data['daily_rating_change'] }}</td>
+   {% elif data['daily_rating_change']  < 0 %}
+     <td>&darr;{{ data['daily_rating_change'] }}</td>
+   {% else %}
+     <td>&harr;</td>
+   {% endif %}
 
 {% endfor %}
 
