@@ -84,5 +84,6 @@ def character_name(region,realm,character_name):
                             where name = '{}'
                                 and realm = '{}'
                                 and region = '{}'
+                            order by last_crawled_at desc
                                 """.format(character_name,realm,region)).fetchone()
     return render_template('character.html',data=data,character=character,distinct_crawl_dates=distinct_crawl_dates)
