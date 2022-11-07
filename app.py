@@ -63,7 +63,7 @@ def character_name(region,realm,character_name):
     cursor = conn.cursor()
 
     distinct_crawl_dates = cursor.execute("""select distinct active_spec_role,active_spec_name,last_crawled_at,equipped_item_level
-                                        from character_gear
+                                        from character_gear_ext
                                         where name = '{}'
                                             and realm = '{}'
                                             and region = '{}'
@@ -72,7 +72,7 @@ def character_name(region,realm,character_name):
 
 
     results = cursor.execute("""select *
-                            from character_gear
+                            from character_gear_ext
                             where name = '{}'
                                 and realm = '{}'
                                 and region = '{}'
@@ -80,7 +80,7 @@ def character_name(region,realm,character_name):
 
     data = results.fetchall()
     character = cursor.execute("""select *
-                            from character_gear
+                            from character_gear_ext
                             where name = '{}'
                                 and realm = '{}'
                                 and region = '{}'

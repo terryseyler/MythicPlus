@@ -312,7 +312,7 @@ conn.execute("""create table season_best_pivot_ext as
 
             ,cur."Mechagon Junkyard Fortified"
             ,cur."Mechagon Junkyard Tyrannical"
-            
+
             ,round(cur.total_rating - pr.total_rating,1) as daily_rating_change
 
             , pr."Tazavesh: So\'leah\'s Gambit Fortified" as pr_GMBT_for
@@ -356,21 +356,38 @@ conn.execute("""create table season_best_pivot_ext as
             """
             )
 conn.commit()
-conn.execute("""with temp_table as
+conn.execute("drop table character_gear_ext")
+conn.execute("""create table character_gear_ext as
+            select gear.name
+            ,gear.realm
+            ,gear.region
+            ,gear.item_level
+            ,gear.item_slot
+            ,gear.item_name
+            ,gear.derived_item_level
+            ,gear.last_crawled_at
+            ,gear.equipped_item_level
+
+            ,gear.class
+            ,gear.unique_key
+            ,gear.active_spec_name
+            ,gear.active_spec_role
+
+            ,item_level.slot_item_level_change
+            from
             (
-            select *
-            ,item_level - LEAD(item_level,1,0) over (partition by name,realm,region,item_slot order by last_crawled_at desc) as item_level_change
+            select * from character_gear
+            )gear
+            left join
+            (
+            select
+            unique_key
+            ,item_level - LEAD(item_level,1,0) over (partition by name,realm,region,item_slot order by last_crawled_at desc) as slot_item_level_change
             from character_gear
-            )
-            update character_gear set slot_item_level_change=temp.item_level_change
-            from temp_table temp
-            where temp.name = character_gear.name
-                and temp.region = character_gear.region
-                and temp.realm = character_gear.realm
-                and temp.item_slot = character_gear.item_slot
-                and temp.item_name = character_gear.item_name
-                and temp.item_level = character_gear.item_level
-                and temp.derived_item_level = character_gear.derived_item_level
+            )item_level
+
+            on item_level.unique_key = gear.unique_key
+
             """)
 print("gear table updated")
 conn.commit()
