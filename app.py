@@ -47,7 +47,7 @@ def create_connection():
 def index():
     conn = create_connection()
     cursor  = conn.cursor()
-    data = cursor.execute("""select * from base_characters base left join season_best_pivot piv
+    data = cursor.execute("""select * from base_characters base left join season_best_pivot_ext piv
     on upper(base.name) = upper(piv.name)
     and upper(base.realm) = upper(piv.realm)
     and upper(base.region) = upper(piv.region)

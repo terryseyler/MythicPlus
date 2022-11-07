@@ -280,46 +280,78 @@ df_season_best.to_sql('season_best_pivot',conn,if_exists='append')
 conn.commit()
 #update the gear table with increases
 print("updating scoreboard changes")
+conn.execute("drop table season_best_pivot_ext")
+conn.commit()
+conn.execute("""create table season_best_pivot_ext as
+            select cur.name
+            ,cur.realm
+            ,cur.region
+            ,cur.scoreboard_date
+            ,cur.total_rating
 
-conn.execute("""update season_best_pivot
-            set daily_rating_change = round(season_best_pivot.total_rating - pr.total_rating,1)
+            ,cur."Tazavesh: So\'leah\'s Gambit Fortified"
+            ,cur."Tazavesh: So\'leah\'s Gambit Tyrannical"
 
-            , pr_GMBT_for = pr."Tazavesh: So\'leah\'s Gambit Fortified"
-            , pr_GMBT_tyr = pr."Tazavesh: So\'leah\'s Gambit Tyrannical"
+            ,cur."Tazavesh: Streets of Wonder Fortified"
+            ,cur."Tazavesh: Streets of Wonder Tyrannical"
 
-            , pr_STRT_for = pr."Tazavesh: Streets of Wonder Fortified"
-            , pr_STRT_tyr = pr."Tazavesh: Streets of Wonder Tyrannical"
+            ,cur."Return to Karazhan: Upper Fortified"
+            ,cur."Return to Karazhan: Upper Tyrannical"
 
-            , pr_UPPR_for = pr."Return to Karazhan: Upper Fortified"
-            , pr_UPPR_tyr = pr."Return to Karazhan: Upper Tyrannical"
+            ,cur."Return to Karazhan: Lower Fortified"
+            ,cur."Return to Karazhan: Lower Tyrannical"
 
-            , pr_LOWR_for = pr."Return to Karazhan: Lower Fortified"
-            , pr_LOWR_tyr = pr."Return to Karazhan: Lower Tyrannical"
+            ,cur."Iron Docks Fortified"
+            ,cur."Iron Docks Tyrannical"
 
-            , pr_ID_for = pr."Iron Docks Fortified"
-            , pr_ID_tyr = pr."Iron Docks Tyrannical"
+            ,cur."Grimrail Depot Fortified"
+            ,cur."Grimrail Depot Tyrannical"
 
-            , pr_GD_for = pr."Grimrail Depot Fortified"
-            , pr_GD_tyr = pr."Grimrail Depot Tyrannical"
+            ,cur."Mechagon Workshop Fortified"
+            ,cur."Mechagon Workshop Tyrannical"
 
-            , pr_WKSP_for = pr."Mechagon Workshop Fortified"
-            , pr_WKSP_tyr = pr."Mechagon Workshop Tyrannical"
+            ,cur."Mechagon Junkyard Fortified"
+            ,cur."Mechagon Junkyard Tyrannical"
+            
+            ,round(cur.total_rating - pr.total_rating,1) as daily_rating_change
 
-            , pr_JUNK_for = pr."Mechagon Junkyard Fortified"
-            , pr_JUNK_tyr = pr."Mechagon Junkyard Tyrannical"
+            , pr."Tazavesh: So\'leah\'s Gambit Fortified" as pr_GMBT_for
+            , pr."Tazavesh: So\'leah\'s Gambit Tyrannical" as pr_GMBT_tyr
 
-            from season_best_pivot pr
-            where pr.name = season_best_pivot.name
-            and pr.realm = season_best_pivot.realm
-            and pr.region = season_best_pivot.region
-            and date(pr.scoreboard_date) = date(season_best_pivot.scoreboard_date,
-                                            case when strftime("%w",season_best_pivot.scoreboard_date) = "0" then "-6 "
-                                            when strftime("%w",season_best_pivot.scoreboard_date) = "1" then  "-7 "
-                                            when strftime("%w",season_best_pivot.scoreboard_date) = "2" then "-1 "
-                                            when strftime("%w",season_best_pivot.scoreboard_date) = "3" then "-2 "
-                                            when strftime("%w",season_best_pivot.scoreboard_date) = "4" then "-3 "
-                                            when strftime("%w",season_best_pivot.scoreboard_date) = "5" then  "-4 "
-                                            when strftime("%w",season_best_pivot.scoreboard_date) = "6" then "-5 "
+            , pr."Tazavesh: Streets of Wonder Fortified" as pr_STRT_for
+            ,   pr."Tazavesh: Streets of Wonder Tyrannical" as pr_STRT_tyr
+
+            ,  pr."Return to Karazhan: Upper Fortified" as pr_UPPR_for
+            ,  pr."Return to Karazhan: Upper Tyrannical" as pr_UPPR_tyr
+
+            ,  pr."Return to Karazhan: Lower Fortified" as pr_LOWR_for
+            ,  pr."Return to Karazhan: Lower Tyrannical" as pr_LOWR_tyr
+
+            ,   pr."Iron Docks Fortified" as pr_ID_for
+            ,   pr."Iron Docks Tyrannical" as pr_ID_tyr
+
+            ,   pr."Grimrail Depot Fortified" as pr_GD_for
+            ,  pr."Grimrail Depot Tyrannical" as pr_GD_tyr
+
+            ,  pr."Mechagon Workshop Fortified" as pr_WKSP_for
+            ,  pr."Mechagon Workshop Tyrannical" as pr_WKSP_tyr
+
+            ,  pr."Mechagon Junkyard Fortified" as pr_JUNK_for
+            ,  pr."Mechagon Junkyard Tyrannical" as pr_JUNK_tyr
+
+            from season_best_pivot cur
+            left join season_best_pivot pr
+            on pr.name = cur.name
+            and pr.realm = cur.realm
+            and pr.region = cur.region
+            and date(pr.scoreboard_date) = date(cur.scoreboard_date,
+                                            case when strftime("%w",cur.scoreboard_date) = "0" then "-6 "
+                                            when strftime("%w",cur.scoreboard_date) = "1" then  "-7 "
+                                            when strftime("%w",cur.scoreboard_date) = "2" then "-1 "
+                                            when strftime("%w",cur.scoreboard_date) = "3" then "-2 "
+                                            when strftime("%w",cur.scoreboard_date) = "4" then "-3 "
+                                            when strftime("%w",cur.scoreboard_date) = "5" then  "-4 "
+                                            when strftime("%w",cur.scoreboard_date) = "6" then "-5 "
                                             end || "days")
             """
             )
