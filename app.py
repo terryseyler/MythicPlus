@@ -64,7 +64,11 @@ def character_name(region,realm,character_name):
     conn = create_connection()
     cursor = conn.cursor()
 
-    distinct_crawl_dates = cursor.execute("""select distinct active_spec_role,active_spec_name,last_crawled_at,equipped_item_level
+    distinct_crawl_dates = cursor.execute("""select distinct active_spec_role
+                                        ,active_spec_name
+                                        ,strftime('%Y-%m-%d %H:%M',last_crawled_at) as last_crawled_cleansed
+                                        ,last_crawled_at
+                                        ,equipped_item_level
                                         from character_gear_ext
                                         where name = '{}'
                                             and realm = '{}'
@@ -81,7 +85,9 @@ def character_name(region,realm,character_name):
                                 """.format(character_name,realm,region))
 
     data = results.fetchall()
-    all_mythic_plus_runs = cursor.execute("""select * from all_mythic_plus_runs
+    all_mythic_plus_runs = cursor.execute("""select *
+                                    ,strftime('%Y-%m-%d %H:%M',completed_at) as completed_at_cleansed
+                                    from all_mythic_plus_runs
                                     where name = '{}'
                                         and realm = '{}'
                                         and region = '{}'
@@ -89,6 +95,7 @@ def character_name(region,realm,character_name):
                                         """.format(character_name,realm,region)).fetchall()
 
     character = cursor.execute("""select *
+                            ,strftime('%Y-%m-%d %H:%M:%S',last_crawled_at) as last_crawled_cleansed
                             from character_gear_ext
                             where name = '{}'
                                 and realm = '{}'
