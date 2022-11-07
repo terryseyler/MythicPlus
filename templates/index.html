@@ -10,29 +10,29 @@
 
 <table class="scoreboard">
 <tr>
-    <td>Character Name</td>
+    <td class="scoreboard_char_name">Character Name</td>
 
 <!---for distinct column names!-->
-    <td>Grimrail Depot</td>
-    <td>Iron Docks</td>
-    <td>Mechagon Junkyard</td>
-    <td>Mechagon Workshop</td>
-    <td>Return to Karazhan: Lower</td>
-    <td>Return to Karazhan: Upper</td>
-    <td>Tazavesh: So'leah's Gambit</td>
-    <td>Tazavesh: Streets of Wonder</td>
-    <td>Total Rating</td>
-    <td>Weekly Rating Change</td>
+    <td class="scoreboard_attributes">GD</td>
+    <td class="scoreboard_attributes">ID</td>
+    <td class="scoreboard_attributes">JUNK</td>
+    <td class="scoreboard_attributes">WORK</td>
+    <td class="scoreboard_attributes">LOWR</td>
+    <td class="scoreboard_attributes">UPPR</td>
+    <td class="scoreboard_attributes">GMBT</td>
+    <td class="scoreboard_attributes">STRT</td>
+    <td class="scoreboard_attributes">Total Rating</td>
+    <td class="scoreboard_attributes">Weekly Rating Change</td>
 <!---end for!-->
 </tr>
 
 {% for data in data %}
 
 <tr>
-    <td><a href="{{url_for('character_name',character_name=data['name'],realm=data['realm'],region=data['region'])}}">{{ data['name'] }} - {{data['realm']}}</a></td>
+    <td class="scoreboard_char_name"><a href="{{url_for('character_name',character_name=data['name'],realm=data['realm'],region=data['region'])}}">{{ data['name'] }} - {{data['realm']}}</a></td>
 
 <!--Grimrail F-->
-    <td>{% if data['pr_GD_for'] !=  data['Grimrail Depot Fortified'] %}
+    <td class="scoreboard_attributes">{% if data['pr_GD_for'] !=  data['Grimrail Depot Fortified'] %}
 
     {{ data['Grimrail Depot Fortified']}} ( {{data['pr_GD_for']}}  )
 
@@ -51,7 +51,7 @@
     {% endif %}</td>
 
 <!--ID F-->
-    <td>{% if data['pr_ID_for'] !=  data['Iron Docks Fortified'] %}
+    <td class="scoreboard_attributes">{% if data['pr_ID_for'] !=  data['Iron Docks Fortified'] %}
 
     {{ data['Iron Docks Fortified']}} ( {{data['pr_ID_for']}}  )
 
@@ -71,7 +71,7 @@
 
 
 <!--JUNK F-->
-    <td>{% if data['pr_JUNK_for'] !=  data['Mechagon Junkyard Fortified'] %}
+    <td class="scoreboard_attributes">{% if data['pr_JUNK_for'] !=  data['Mechagon Junkyard Fortified'] %}
 
     {{ data['Mechagon Junkyard Fortified']}} ( {{data['pr_JUNK_for']}}  )
 
@@ -90,7 +90,7 @@
     {% endif %}</td>
 
 <!--WKSP F-->
-    <td>{% if data['pr_WKSP_for'] !=  data['Mechagon Workshop Fortified'] %}
+    <td class="scoreboard_attributes">{% if data['pr_WKSP_for'] !=  data['Mechagon Workshop Fortified'] %}
 
     {{ data['Mechagon Workshop Fortified']}} ( {{data['pr_WKSP_for']}}  )
 
@@ -114,7 +114,7 @@
     </td>
 
 <!--Lower F-->
-    <td>{% if data['pr_LOWR_for'] !=  data['Return to Karazhan: Lower Fortified'] %}
+    <td class="scoreboard_attributes">{% if data['pr_LOWR_for'] !=  data['Return to Karazhan: Lower Fortified'] %}
 
     {{ data['Return to Karazhan: Lower Fortified']}} ( {{data['pr_LOWR_for']}}  )
 
@@ -135,7 +135,7 @@
     {% endif %}</td>
 
 <!--UPPER F-->
-    <td>{% if data['pr_UPPR_for'] !=  data['Return to Karazhan: Upper Fortified'] %}
+    <td class="scoreboard_attributes">{% if data['pr_UPPR_for'] !=  data['Return to Karazhan: Upper Fortified'] %}
 
     {{ data['Return to Karazhan: Upper Fortified']}} ( {{data['pr_UPPR_for']}}  )
 
@@ -157,7 +157,7 @@
     {% endif %}</td>
 
 <!--Gambit F-->
-    <td>{% if data['pr_GMBT_for'] !=  data['Tazavesh: So\'leah\'s Gambit Fortified'] %}
+    <td class="scoreboard_attributes">{% if data['pr_GMBT_for'] !=  data['Tazavesh: So\'leah\'s Gambit Fortified'] %}
 
     {{ data['Tazavesh: So\'leah\'s Gambit Fortified'] }} ( {{data['pr_GMBT_for']}}  )
 
@@ -176,7 +176,7 @@
     {% endif %}</td>
 
 <!--street F-->
-    <td>{% if data['pr_STRT_for'] !=  data['Tazavesh: Streets of Wonder Fortified'] %}
+    <td class="scoreboard_attributes">{% if data['pr_STRT_for'] !=  data['Tazavesh: Streets of Wonder Fortified'] %}
 
     {{ data['Tazavesh: Streets of Wonder Fortified']}} ( {{data['pr_STRT_for']}}  )
 
@@ -195,14 +195,14 @@
     {% else %}
     {{ data['Tazavesh: Streets of Wonder Tyrannical'] }}
     {% endif %}</td>
-    <td>{{ data['total_rating'] }}</td>
+    <td class="scoreboard_attributes">{{ data['total_rating'] }}</td>
 
    {% if data['daily_rating_change'] > 0 %}
-     <td>&uarr; {{ data['daily_rating_change'] }}</td>
+     <td class="scoreboard_attributes">&uarr; {{ data['daily_rating_change'] }}</td>
    {% elif data['daily_rating_change']  < 0 %}
-     <td>&darr;{{ data['daily_rating_change'] }}</td>
+     <td class="scoreboard_attributes">&darr;{{ data['daily_rating_change'] }}</td>
    {% else %}
-     <td>&harr;</td>
+     <td class="scoreboard_attributes">&harr;</td>
    {% endif %}
 
 {% endfor %}
