@@ -345,13 +345,13 @@ conn.execute("""create table season_best_pivot_ext as
             and pr.realm = cur.realm
             and pr.region = cur.region
             and date(pr.scoreboard_date) = date(cur.scoreboard_date,
-                                            case when strftime("%w",cur.scoreboard_date) = "0" then "-6 "
-                                            when strftime("%w",cur.scoreboard_date) = "1" then  "-7 "
-                                            when strftime("%w",cur.scoreboard_date) = "2" then "-1 "
-                                            when strftime("%w",cur.scoreboard_date) = "3" then "-2 "
-                                            when strftime("%w",cur.scoreboard_date) = "4" then "-3 "
-                                            when strftime("%w",cur.scoreboard_date) = "5" then  "-4 "
-                                            when strftime("%w",cur.scoreboard_date) = "6" then "-5 "
+                                            case when strftime("%w",cur.scoreboard_date) = "0" then "-5 "
+                                            when strftime("%w",cur.scoreboard_date) = "1" then  "-6 "
+                                            when strftime("%w",cur.scoreboard_date) = "2" then "-7 "
+                                            when strftime("%w",cur.scoreboard_date) = "3" then "-1 "
+                                            when strftime("%w",cur.scoreboard_date) = "4" then "-2 "
+                                            when strftime("%w",cur.scoreboard_date) = "5" then  "-3 "
+                                            when strftime("%w",cur.scoreboard_date) = "6" then "-4 "
                                             end || "days")
             """
             )
