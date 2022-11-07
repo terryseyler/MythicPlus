@@ -1,5 +1,12 @@
 
-table {
+table.scoreboard {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+table.character {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
@@ -8,9 +15,21 @@ table {
 
 th, td {
   text-align: left;
-  padding: 16px;
+  vertical-align:top;
+  padding: 0px;
+  font-size: 12px;
 }
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+.row {
+  display: flex;
+  margin-left:-5px;
+  margin-right:-5px;
+}
+
+.column {
+  flex: 50%;
+  padding: 5px;
 }

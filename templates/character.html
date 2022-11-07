@@ -5,30 +5,50 @@
 
 <h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }} - {{ character['active_spec_name'] }} - {{character['class']}}</h3>
 
+<div class="row">
+<div class ="column">
 {% for date in distinct_crawl_dates %}
 
 <h4>{{ date['active_spec_name'] }} - {{date['equipped_item_level']}} Item level as of {{date['last_crawled_at'] }}</h4>
 
-<table>
+<table class="character">
 {% for item in data %}
 {% if item['last_crawled_at'] == date['last_crawled_at'] %}
 
 <tr>
-  <td>{{ item['item_slot'] }}</td>
-  <td>{{ item['item_name'] }}</td>
-  <td>{{ item['item_level'] }}</td>
+  <td width="5%">{{ item['item_slot'] }}</td>
+  <td width="15%">{{ item['item_name'] }}</td>
+  <td width="5%">{{ item['item_level'] }}</td>
 
 {% if item['slot_item_level_change'] > 0 %}
-  <td>&uarr; {{ item['slot_item_level_change']}}</td>
+  <td width="5%">&uarr; {{ item['slot_item_level_change']}}</td>
 {% elif item['slot_item_level_change'] < 0 %}
-  <td>&darr;{{ item['slot_item_level_change']}}</td>
+  <td width="5%">&darr;{{ item['slot_item_level_change']}}</td>
 {% else %}
-  <td>&harr;</td>
+  <td width="5%">&harr;</td>
 {% endif %}
 
-
+</tr>
 {% endif %}
 
 {% endfor %}
 </table>
 {% endfor %}
+</div>
+
+<div class="column">
+<h3>Mythic Plus Runs</h3>
+  <table class="character">
+  {% for dungeon in all_mythic_plus_runs %}
+  <tr>
+    <td>{{ dungeon['dungeon'] }}</td>
+    <td>{{ dungeon['mythic_level'] }}</td>
+    <td>{{ dungeon['num_keystone_upgrades'] }}</td>
+    <td>{{ dungeon['score'] }}</td>
+    <td>{{ dungeon['completed_at'] }}</td>
+  </tr>
+
+  {% endfor %}
+</table>
+</div>
+</div>

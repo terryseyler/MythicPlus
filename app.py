@@ -81,6 +81,13 @@ def character_name(region,realm,character_name):
                                 """.format(character_name,realm,region))
 
     data = results.fetchall()
+    all_mythic_plus_runs = cursor.execute("""select * from all_mythic_plus_runs
+                                    where name = '{}'
+                                        and realm = '{}'
+                                        and region = '{}'
+                                    order by completed_at desc
+                                        """.format(character_name,realm,region)).fetchall()
+
     character = cursor.execute("""select *
                             from character_gear_ext
                             where name = '{}'
@@ -88,4 +95,4 @@ def character_name(region,realm,character_name):
                                 and region = '{}'
                             order by last_crawled_at desc
                                 """.format(character_name,realm,region)).fetchone()
-    return render_template('character.html',data=data,character=character,distinct_crawl_dates=distinct_crawl_dates)
+    return render_template('character.html',data=data,character=character,distinct_crawl_dates=distinct_crawl_dates,all_mythic_plus_runs=all_mythic_plus_runs)
