@@ -51,11 +51,13 @@ def index():
     on upper(base.name) = upper(piv.name)
     and upper(base.realm) = upper(piv.realm)
     and upper(base.region) = upper(piv.region)
-    where scoreboard_date = (select max(scoreboard_date) from  season_best_pivot)
+    where scoreboard_date = (select max(scoreboard_date) from  season_best_pivot_ext)
 
-    order by total_rating desc""")
+    order by total_rating desc""").fetchall()
+
+    max_date = cursor.execute('select max(scoreboard_date) as max_date from season_best_pivot_ext').fetchone()
     print('hi')
-    return render_template('index.html',data=data)
+    return render_template('index.html',data=data,max_date = max_date)
 
 @app.route('/<region>/<realm>/<character_name>')
 def character_name(region,realm,character_name):
