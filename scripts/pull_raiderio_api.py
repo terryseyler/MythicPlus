@@ -282,9 +282,9 @@ print("updating scoreboard changes")
 conn.execute("drop table season_best_pivot_ext")
 conn.commit()
 conn.execute("""create table season_best_pivot_ext as
-            select cur.name
-            ,cur.realm
-            ,cur.region
+            select base.name
+            ,base.realm
+            ,base.region
             ,cur.scoreboard_date
             ,cur.total_rating
 
@@ -338,7 +338,12 @@ conn.execute("""create table season_best_pivot_ext as
             ,  pr."Mechagon Junkyard Fortified" as pr_JUNK_for
             ,  pr."Mechagon Junkyard Tyrannical" as pr_JUNK_tyr
 
-            from season_best_pivot cur
+            from base_characters base
+            left join season_best_pivot cur
+            on base.name=cur.name
+            and base.realm=cur.realm
+            and base.region=cur.region
+
             left join season_best_pivot pr
             on pr.name = cur.name
             and pr.realm = cur.realm
@@ -354,6 +359,11 @@ conn.execute("""create table season_best_pivot_ext as
                                             end || "days")
             """
             )
+conn.commit()
+conn.execute("""update season_best_pivot_ext
+                set scoreboard_date = "{}"
+                ,daily_rating_change=0
+                where scoreboard_date is null""".format(now_string))
 conn.commit()
 conn.execute("drop table character_gear_ext")
 conn.execute("""create table character_gear_ext as
