@@ -5,6 +5,11 @@
      ,"region":"us"
     },
     {
+    "name":"Rahushin"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
     "name":"Sulmasol"
      ,"server":"Illidan"
      ,"region":"us"

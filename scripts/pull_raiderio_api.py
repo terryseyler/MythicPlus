@@ -3,7 +3,6 @@
 
 
 import requests
-import sys
 import json
 import pandas as pd
 import urllib3
