@@ -279,7 +279,7 @@ df_season_best.to_sql('season_best_pivot',conn,if_exists='append')
 conn.commit()
 #update the gear table with increases
 print("updating scoreboard changes")
-conn.execute("drop table season_best_pivot_ext")
+conn.execute("drop table if exists season_best_pivot_ext")
 conn.commit()
 conn.execute("""create table season_best_pivot_ext as
             select base.name
