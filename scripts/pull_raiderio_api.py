@@ -81,6 +81,7 @@ for char in character_json:
         values(?,?,?,?)"""
         ,(char['name'],char['server'],char['region'],char['name']+char['server']+char['region'])
         )
+    conn.commit()
     print('{} being pulled'.format(char['name']))
     r = requests.get('https://raider.io/api/v1/characters/profile?region={}&realm={}&name={}&fields=mythic_plus_best_runs%2Cmythic_plus_highest_level_runs%2Cmythic_plus_alternate_runs%2Cgear%2Cmythic_plus_weekly_highest_level_runs%2Cmythic_plus_previous_weekly_highest_level_runs'.format(char['region'],char['server'],char['name']))
     affixes=[]
@@ -110,7 +111,10 @@ for char in character_json:
             sum_item_level = sum_item_level + j['gear']['items'][item]['item_level']
             if item != 'shirt':
                 item_count = item_count + 1
-        derived_item_level = sum_item_level / item_count
+        try:
+            derived_item_level = sum_item_level / item_count
+        except Exception as e:
+            derived_item_level = 0
         for dungeon in all_best_runs:
             conn.execute(
                       """INSERT OR IGNORE INTO mythic_plus_best_runs (
