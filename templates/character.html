@@ -41,9 +41,9 @@
   <table class="character">
   {% for dungeon in all_mythic_plus_runs %}
   <tr>
-    <td>{{ dungeon['dungeon'] }}</td>
+    <td>{{ dungeon['dungeon'] }} - {{dungeon['tyr_or_fort']}}</td>
     <td>{{ dungeon['mythic_level'] }}</td>
-    <td>{{ dungeon['num_keystone_upgrades'] }}</td>
+    <td>+{{ dungeon['num_keystone_upgrades'] }}</td>
     <td>{{ dungeon['score'] }}</td>
     <td>{{ dungeon['completed_at_cleansed'] }}</td>
   </tr>

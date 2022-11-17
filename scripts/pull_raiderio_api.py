@@ -290,33 +290,33 @@ conn.execute("""create table season_best_pivot_ext as
             ,base.realm
             ,base.region
             ,cur.scoreboard_date
-            ,cur.total_rating
+            ,coalesce(cur.total_rating,0) as total_rating
 
-            ,cur."Tazavesh: So\'leah\'s Gambit Fortified"
-            ,cur."Tazavesh: So\'leah\'s Gambit Tyrannical"
+            ,coalesce(cur."Tazavesh: So\'leah\'s Gambit Fortified","") as "Tazavesh: So\'leah\'s Gambit Fortified"
+            ,coalesce(cur."Tazavesh: So\'leah\'s Gambit Tyrannical","") as "Tazavesh: So\'leah\'s Gambit Tyrannical"
 
-            ,cur."Tazavesh: Streets of Wonder Fortified"
-            ,cur."Tazavesh: Streets of Wonder Tyrannical"
+            ,coalesce(cur."Tazavesh: Streets of Wonder Fortified","") as "Tazavesh: Streets of Wonder Fortified"
+            ,coalesce(cur."Tazavesh: Streets of Wonder Tyrannical","") as "Tazavesh: Streets of Wonder Tyrannical"
 
-            ,cur."Return to Karazhan: Upper Fortified"
-            ,cur."Return to Karazhan: Upper Tyrannical"
+            ,coalesce(cur."Return to Karazhan: Upper Fortified","")  as "Return to Karazhan: Upper Fortified"
+            ,coalesce(cur."Return to Karazhan: Upper Tyrannical","")  as "Return to Karazhan: Upper Tyrannical"
 
-            ,cur."Return to Karazhan: Lower Fortified"
-            ,cur."Return to Karazhan: Lower Tyrannical"
+            ,coalesce(cur."Return to Karazhan: Lower Fortified","") as "Return to Karazhan: Lower Fortified"
+            ,coalesce(cur."Return to Karazhan: Lower Tyrannical","") as "Return to Karazhan: Lower Tyrannical"
 
-            ,cur."Iron Docks Fortified"
-            ,cur."Iron Docks Tyrannical"
+            ,coalesce(cur."Iron Docks Fortified","") as "Iron Docks Fortified"
+            ,coalesce(cur."Iron Docks Tyrannical","") as "Iron Docks Tyrannical"
 
-            ,cur."Grimrail Depot Fortified"
-            ,cur."Grimrail Depot Tyrannical"
+            ,coalesce(cur."Grimrail Depot Fortified","")  as "Grimrail Depot Fortified"
+            ,coalesce(cur."Grimrail Depot Tyrannical","") as "Grimrail Depot Tyrannical"
 
-            ,cur."Mechagon Workshop Fortified"
-            ,cur."Mechagon Workshop Tyrannical"
+            ,coalesce(cur."Mechagon Workshop Fortified","") as "Mechagon Workshop Fortified"
+            ,coalesce(cur."Mechagon Workshop Tyrannical","") as "Mechagon Workshop Tyrannical"
 
-            ,cur."Mechagon Junkyard Fortified"
-            ,cur."Mechagon Junkyard Tyrannical"
+            ,coalesce(cur."Mechagon Junkyard Fortified","") as "Mechagon Junkyard Fortified"
+            ,coalesce(cur."Mechagon Junkyard Tyrannical","") as "Mechagon Junkyard Tyrannical"
 
-            ,round(cur.total_rating - pr.total_rating,1) as daily_rating_change
+            ,coalesce(round(cur.total_rating - pr.total_rating,1),0) as daily_rating_change
 
             , pr."Tazavesh: So\'leah\'s Gambit Fortified" as pr_GMBT_for
             , pr."Tazavesh: So\'leah\'s Gambit Tyrannical" as pr_GMBT_tyr
