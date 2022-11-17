@@ -5,6 +5,26 @@
      ,"region":"us"
     },
     {
+    "name":"Milario"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Sulmar"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Jizzion"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Vaylerion"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
     "name":"Rahushin"
      ,"server":"Illidan"
      ,"region":"us"
