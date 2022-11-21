@@ -1,6 +1,6 @@
 #30 * * * * /Users/terryseyler/opt/anaconda3/bin/python "/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/scripts/pull_raiderio_api.py"
 
-
+import sys
 import math
 import requests
 import json
@@ -267,7 +267,7 @@ for char in character_json:
 
         for item in j_equip['equipped_items']:
             conn.execute(
-                    """INSERT OR IGNORE INTO character_gear (
+                    """INSERT OR REPLACE INTO character_gear (
                         name
                         ,region
                         ,realm
