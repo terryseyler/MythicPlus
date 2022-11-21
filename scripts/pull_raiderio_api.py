@@ -1,7 +1,7 @@
 #30 * * * * /Users/terryseyler/opt/anaconda3/bin/python "/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/scripts/pull_raiderio_api.py"
 
 
-
+import math
 import requests
 import json
 import pandas as pd
@@ -12,7 +12,35 @@ from sqlite3 import Error
 urllib3.disable_warnings()
 pd.set_option('display.max_colwidth', None)
 import datetime as dt
+from oauthlib.oauth2 import WebApplicationClient
 
+def get_new_token(token_server_url,client_id,client_secret):
+    client = WebApplicationClient(client_id)
+    data = client.prepare_request_body(
+              client_id = client_id,
+              client_secret = client_secret
+                )
+
+    token_req_payload = {'grant_type': 'client_credentials'}
+
+    token_response = requests.post(token_server_url,
+            data=token_req_payload, verify=False, allow_redirects=False,
+            auth=(client_id, client_secret))
+
+    if token_response.status_code !=200:
+            print("Failed to obtain token from the OAuth 2.0 server", file=sys.stderr)
+            return
+    tokens = json.loads(token_response.text)
+    return tokens['access_token']
+
+def get_client_and_secret():
+    bliz_url = 'https://oauth.battle.net/token'
+    bliz_client_id = '638402a95f5440a9aac65c1b358b337f'
+    bliz_client_secret = '2iDa5FFssrLdbosHAmW2a25Wx1xjGXzh'
+    return bliz_url,bliz_client_id,bliz_client_secret
+bliz_url,bliz_client_id,bliz_client_secret = get_client_and_secret()
+
+bliz_token = get_new_token(bliz_url,bliz_client_id,bliz_client_secret)
 
 def create_connection():
     """ create a database connection to a SQLite database """
@@ -68,7 +96,8 @@ conn.close()
 # reconstructing the data as a dictionary
 character_json = json.loads(data)
 
-
+now_string = dt.datetime.now().strftime("%Y-%m-%d")
+now__time_string = dt.datetime.now().strftime("%m-%d-%Y %H:%M")
 for char in character_json:
     conn=create_connection()
     conn.execute(
@@ -84,6 +113,7 @@ for char in character_json:
     conn.commit()
     print('{} being pulled'.format(char['name']))
     r = requests.get('https://raider.io/api/v1/characters/profile?region={}&realm={}&name={}&fields=mythic_plus_best_runs%2Cmythic_plus_highest_level_runs%2Cmythic_plus_alternate_runs%2Cgear%2Cmythic_plus_weekly_highest_level_runs%2Cmythic_plus_previous_weekly_highest_level_runs'.format(char['region'],char['server'],char['name']))
+    r_bliz_equip = requests.get('https://us.api.blizzard.com/profile/wow/character/{0}/{1}/equipment?namespace=profile-us&locale=en_US&access_token={2}'.format(char['server'].lower(),char['name'].lower(),bliz_token))
     affixes=[]
     if r.status_code == 200:
         print('{} api pulled'.format(char['name']))
@@ -105,16 +135,7 @@ for char in character_json:
             all_mythic_dungeons[i]['affix_names'] = [affix['name'] for affix in dungeon['affixes']]
         #insert into mythic_plus_best_runs
 
-        sum_item_level = 0
-        item_count = 0
-        for item in j['gear']['items']:
-            sum_item_level = sum_item_level + j['gear']['items'][item]['item_level']
-            if item != 'shirt':
-                item_count = item_count + 1
-        try:
-            derived_item_level = sum_item_level / item_count
-        except Exception as e:
-            derived_item_level = 0
+
         for dungeon in all_best_runs:
             conn.execute(
                       """INSERT OR IGNORE INTO mythic_plus_best_runs (
@@ -212,7 +233,39 @@ for char in character_json:
                             )
                     )
             conn.commit()
-        for item in j['gear']['items']:
+    else:
+        print('raider io did not work {}'.format(char['name']))
+    if r_bliz_equip.status_code == 200:
+        j_equip = json.loads(r_bliz_equip.text)
+        sum_item_level = 0
+        item_count = 0
+        offhand = False
+
+        for item in j_equip['equipped_items']:
+            if item['slot']['name'] == 'Off Hand':
+                #print('offhand')
+                offhand=True
+        if offhand == True:
+            for item in j_equip['equipped_items']:
+                if item['slot']['name'] != 'Shirt' and item['slot']['name'] != 'Tabard':
+                    sum_item_level = sum_item_level + item['level']['value']
+                    item_count = item_count + 1
+
+        else:
+            for item in j_equip['equipped_items']:
+                if item['slot']['name'] =='Main Hand':
+                    sum_item_level = sum_item_level + item['level']['value']*2
+                    item_count = item_count + 2
+                elif item['slot']['name'] != 'Shirt' and item['slot']['name'] != 'Tabard':
+                    sum_item_level = sum_item_level + item['level']['value']
+                    item_count = item_count + 1
+
+        try:
+            derived_item_level = sum_item_level / item_count
+        except Exception as e:
+            derived_item_level = 0
+
+        for item in j_equip['equipped_items']:
             conn.execute(
                     """INSERT OR IGNORE INTO character_gear (
                         name
@@ -230,15 +283,15 @@ for char in character_json:
                         ,class
                      )
                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                    (j['name']
-                    ,j['region']
-                    ,j['realm']
-                    ,j['last_crawled_at']
-                    ,j['gear']['item_level_equipped']
-                     ,item
-                     ,j['gear']['items'][item]['item_level']
-                     ,j['gear']['items'][item]['name']
-                     ,j['name']+j['realm']+j['region']+item+j['gear']['items'][item]['name']+str(j['gear']['items'][item]['item_level'])+str(derived_item_level)
+                    (char['name']
+                    ,char['region']
+                    ,char['server']
+                    ,now__time_string
+                    ,math.floor(derived_item_level)
+                     ,item['slot']['name'].lower().replace(" ", "")
+                     ,item['level']['value']
+                     ,item['name']
+                     ,char['name']+char['server']+char['region']+item['slot']['name'].lower().replace(" ", "")+item['name']+str(item['level']['value'])+str(derived_item_level)
                         ,j['active_spec_name']
                         ,j['active_spec_role']
                         ,derived_item_level
@@ -247,7 +300,7 @@ for char in character_json:
                     )
             conn.commit()
     else:
-        print('did not work {}'.format(char['name']))
+        print('blizzard api did not work {}'.format(char['name']))
     conn.close()
 
 print('updating pivot')
@@ -274,7 +327,7 @@ df_season_best = df_db.pivot(index=['name','realm','region']
 df_season_best.replace(np.nan,'',inplace=True)
 
 df_season_best['total_rating'] = df_total_rating['total_rating']
-now_string = dt.datetime.now().strftime("%Y-%m-%d")
+
 df_season_best['scoreboard_date'] =now_string
 
 conn.execute('delete from season_best_pivot where scoreboard_date = "{}"'.format(now_string))

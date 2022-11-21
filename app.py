@@ -66,7 +66,7 @@ def character_name(region,realm,character_name):
 
     distinct_crawl_dates = cursor.execute("""select distinct active_spec_role
                                         ,active_spec_name
-                                        ,strftime('%Y-%m-%d %H:%M',last_crawled_at) as last_crawled_cleansed
+                                        ,last_crawled_at as last_crawled_cleansed
                                         ,last_crawled_at
                                         ,equipped_item_level
                                         from character_gear_ext
@@ -95,7 +95,7 @@ def character_name(region,realm,character_name):
                                         """.format(character_name,realm,region)).fetchall()
 
     character = cursor.execute("""select *
-                            ,strftime('%Y-%m-%d %H:%M:%S',last_crawled_at) as last_crawled_cleansed
+                            ,last_crawled_at as last_crawled_cleansed
                             from character_gear_ext
                             where name = '{}'
                                 and realm = '{}'
