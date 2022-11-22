@@ -2,7 +2,30 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <html>
+<p><a href="{{url_for('index')}}">back</a></p>
 
+<div class="form">
+<span>
+<form method="POST">
+<select name="item_subclass" id="item_subclass">
+  <option value="Cloth">Cloth</option>
+  <option value="Leather">Leather</option>
+  <option value="Mail">Mail</option>
+  <option value="Plate">Plate</option>
+</select>
+<!--
+<label for="Haste">Haste</label>
+<input type="checkbox" id="Crit" name="Crit" value="Crit">
+<label for="Crit">Crit</label>
+<input type="checkbox" id="Vers" name="Vers" value="Vers">
+<label for="Vers">Vers</label>
+<input type="checkbox" id="Mastery" name="Mastery" value="Mastery">
+<label for="Mastery">Mastery</label>
+-->
+<input class="btn" type="submit" name="submit_button" value="Find Upgrades">
+</form>
+</span>
+</div>
 <h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }} - {{ character['active_spec_name'] }} - {{character['class']}}</h3>
 
 <div class="row">

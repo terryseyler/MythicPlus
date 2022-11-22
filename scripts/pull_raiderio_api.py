@@ -456,6 +456,24 @@ conn.execute("""create table character_gear_ext as
 
             """)
 print("gear table updated")
+conn.execute('alter table character_gear_ext add column item_lookup')
+conn.execute("""update character_gear_ext
+             set item_lookup = case when item_slot ="shoulders" then "shoulder"
+                                 when item_slot = "trinket1" then "trinket"
+                                 when item_slot = "trinket2" then "trinket"
+                                 when item_slot = "finger1" then "finger"
+                                 when item_slot = "finger2" then "finger"
+                                 when item_slot = "back" then "cloak"
+                                 when item_slot = "hands" then "hand"
+                                 else item_slot
+             end
+             """)
+conn.execute("""update df_season_one_loot
+             set item_lookup = case when inventory_type in ("RANGEDRIGHT","TWOHWEAPON","WEAPON","RANGED") then "mainhand"
+             when inventory_type in ("HOLDABLE","SHIELD") then "offhand"
+
+             else inventory_type end
+             """)
 conn.commit()
 conn.close()
 print('pivot updated')

@@ -1,0 +1,330 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<p><a href="{{url_for('index')}}">back</a></p>
+<h4>Armor</h4>
+<table>
+<thead>
+  <th>Item Slot</th>
+  <th>Current Item Level</th>
+  <th>Ruby Life Pools (M+)</th>
+  <th>The Azure Vault (M+)</th>
+  <th>The Nokhud Offensive (M+)</th>
+  <th>Algeth'ar Academy< (M+)/th>
+  <th>Court of Stars (M+)</th>
+  <th>Halls of Valor (M+)</th>
+  <th>Temple of the Jade Serpent (M+)</th>
+  <th>Brackenhide Hollow</th>
+  <th>Uldaman: Legacy of Tyr</th>
+  <th>Neltharus</th>
+  <th>Halls of Infusion</th>
+  <th>Dragon Isles (World Bosses)</th>
+
+</thead>
+{% for cur_item in current_equip %}
+
+<tr>
+  <td>{{ cur_item['item_slot'] }}</td>
+  <td>{{ cur_item['item_level'] }}</td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Ruby Life Pools"  %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="The Azure Vault" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="The Nokhud Offensive" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Algeth'ar Academy" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Court of Stars" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Halls of Valor" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Temple of the Jade Serpent" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Brackenhide Hollow" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Uldaman: Legacy of Tyr" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Neltharusw" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Halls of Infusion" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Dragon Isles" %}
+    {{ item['encounter_name'] }}<br>
+    {% endif %}
+    {% endfor %}
+  </td>
+
+</tr>
+
+{% endfor %}
+</table>
+
+<h4>Weaspons / Offhands</h4>
+<table>
+<thead>
+  <th>Item Slot</th>
+  <th>Current Item Level</th>
+  <th>Ruby Life Pools (M+)</th>
+  <th>The Azure Vault (M+)</th>
+  <th>The Nokhud Offensive (M+)</th>
+  <th>Algeth'ar Academy (M+)</th>
+  <th>Court of Stars (M+)</th>
+  <th>Halls of Valor (M+)</th>
+  <th>Temple of the Jade Serpent (M+)</th>
+  <th>Brackenhide Hollow</th>
+  <th>Uldaman: Legacy of Tyr</th>
+  <th>Neltharus</th>
+  <th>Halls of Infusion</th>
+  <th>Dragon Isles (World Bosses)</th>
+
+</thead>
+
+<tr>
+  <td>mainhand</td>
+<td>
+  {% if current_equip_mainhand['item_level'] %}
+  {{ current_equip_mainhand['item_level'] }}
+  {% else %}
+  Not requipped
+  {% endif %}
+<td>
+
+
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Ruby Life Pools"  %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND' and  item['instance_name']=="The Azure Vault" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND' and  item['instance_name']=="The Nokhud Offensive" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND'  and item['instance_name']=="Algeth'ar Academy" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND'  and item['instance_name']=="Court of Stars" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Halls of Valor" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Temple of the Jade Serpent" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Brackenhide Hollow" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND'  and item['instance_name']=="Uldaman: Legacy of Tyr" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND'  and item['instance_name']=="Neltharusw" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Halls of Infusion" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Dragon Isles" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+
+</tr>
+
+<tr>
+  <td>offhand</td>
+<td>
+  {% if current_equip_offhand['item_level'] %}
+  {{ current_equip_offhand['item_level'] }}
+  {% else %}
+  Not requipped
+  {% endif %}
+<td>
+
+
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Ruby Life Pools"  %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND' and  item['instance_name']=="The Azure Vault" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND' and  item['instance_name']=="The Nokhud Offensive" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND'  and item['instance_name']=="Algeth'ar Academy" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND'  and item['instance_name']=="Court of Stars" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Halls of Valor" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Temple of the Jade Serpent" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Brackenhide Hollow" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND'  and item['instance_name']=="Uldaman: Legacy of Tyr" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND'  and item['instance_name']=="Neltharusw" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Halls of Infusion" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+<td>
+  {% for item in items %}
+  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Dragon Isles" %}
+  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
+  {% endif %}
+  {% endfor %}
+</td>
+
+</tr>
+</table>

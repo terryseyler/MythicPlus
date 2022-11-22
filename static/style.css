@@ -13,6 +13,13 @@ table.character {
   border: 1px solid #ddd;
 }
 
+table.upgrade_character {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 10%;
+  border: 1px solid #ddd;
+}
+
 th, td {
   text-align: left;
   vertical-align:top;

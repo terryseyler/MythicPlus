@@ -59,8 +59,50 @@ def index():
     print('hi')
     return render_template('index.html',data=data,max_date = max_date)
 
-@app.route('/<region>/<realm>/<character_name>')
+@app.route('/<region>/<realm>/<character_name>',methods=['POST','GET'])
 def character_name(region,realm,character_name):
+    if request.method=='POST':
+        conn = create_connection()
+        cursor = conn.cursor()
+        item_subclass = request.form["item_subclass"]
+        items = conn.execute("""select *
+                                from df_season_one_loot
+                                where item_subclass='{}'
+                                or item_subclass = 'Miscellaneous'
+                                or inventory_type = 'CLOAK' or inventory_type='FINGER'
+                                or item_lookup in ('mainhand','offhand')
+                            """.format(item_subclass)
+                            ).fetchall()
+        current_equip = cursor.execute("""select *
+                                from character_gear_ext
+                                where name = '{}'
+                                    and realm = '{}'
+                                    and region = '{}'
+                                    and last_crawled_at = (select max(last_crawled_at) from  character_gear_ext)
+                                    and item_slot not in ('tabard','shirt','mainhand','offhand')
+                                    order by item_level
+                                    """.format(character_name,realm,region)).fetchall()
+
+        current_equip_mainhand = cursor.execute("""select *
+                                from character_gear_ext
+                                where name = '{}'
+                                    and realm = '{}'
+                                    and region = '{}'
+                                    and last_crawled_at = (select max(last_crawled_at) from  character_gear_ext)
+                                    and item_slot in ('mainhand')
+                                    order by item_level
+                                    """.format(character_name,realm,region)).fetchone()
+        current_equip_offhand = cursor.execute("""select *
+                                from character_gear_ext
+                                where name = '{}'
+                                    and realm = '{}'
+                                    and region = '{}'
+                                    and last_crawled_at = (select max(last_crawled_at) from  character_gear_ext)
+                                    and item_slot in ('offhand')
+                                    order by item_level
+                                    """.format(character_name,realm,region)).fetchone()
+        return render_template('upgrades.html',items=items,current_equip=current_equip,current_equip_mainhand=current_equip_mainhand,current_equip_offhand=current_equip_offhand)
+
     conn = create_connection()
     cursor = conn.cursor()
 
@@ -73,6 +115,7 @@ def character_name(region,realm,character_name):
                                         where name = '{}'
                                             and realm = '{}'
                                             and region = '{}'
+                                        and item_slot not in ('tabard','shirt')
                                         order by last_crawled_at desc
                                             """.format(character_name,realm,region)).fetchall()
 
