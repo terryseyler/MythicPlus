@@ -27,7 +27,17 @@
   <td>
     {% for item in items %}
     {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Ruby Life Pools"  %}
-    {{ item['encounter_name'] }}<br>
+    <span title="Boss - {{item['encounter_name']}}&#013;
+                 Item Name - {{item['item_name']}}&#013;
+                 Haste - {{item['haste_rating']}}&#013;
+                 Mastery - {{item['mastery_rating']}}&#013;
+                 Crit - {{item['crit_rating']}}&#013;
+                 Vers - {{item['versatility']}}&#013;
+                "
+                >
+                &#10003;
+              </span>
+
     {% endif %}
     {% endfor %}
   </td>
