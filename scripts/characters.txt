@@ -5,6 +5,11 @@
      ,"region":"us"
     },
     {
+    "name":"Sulmadin"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
     "name":"Milario"
      ,"server":"Illidan"
      ,"region":"us"
