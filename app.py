@@ -79,7 +79,7 @@ def character_name(region,realm,character_name):
                                     and realm = '{}'
                                     and region = '{}'
                                     and last_crawled_at = (select max(last_crawled_at) from  character_gear_ext)
-                                    and item_slot not in ('tabard','shirt','mainhand','offhand')
+                                    and item_slot not in ('tabard','shirt','mainhand','offhand','ring2','trinket2')
                                     order by item_level
                                     """.format(character_name,realm,region)).fetchall()
 

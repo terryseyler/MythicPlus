@@ -26,33 +26,42 @@
   <td>{{ cur_item['item_level'] }}</td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Ruby Life Pools"  %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Ruby Life Pools"  %}
     <span title="Boss - {{item['encounter_name']}}&#013;
-                 Item Name - {{item['item_name']}}&#013;
-                 Haste - {{item['haste_rating']}}&#013;
-                 Mastery - {{item['mastery_rating']}}&#013;
-                 Crit - {{item['crit_rating']}}&#013;
-                 Vers - {{item['versatility']}}&#013;
-                "
-                >
-                &#10003;
-              </span>
-
-    {% endif %}
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Ruby Life Pools"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="The Azure Vault" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
-    {% endfor %}
-  </td>
-  <td>
-    {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="The Nokhud Offensive" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="The Azure Vault"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="The Azure Vault"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
