@@ -369,7 +369,7 @@ conn.execute("""create table season_best_pivot_ext as
             ,coalesce(cur."Mechagon Junkyard Fortified","") as "Mechagon Junkyard Fortified"
             ,coalesce(cur."Mechagon Junkyard Tyrannical","") as "Mechagon Junkyard Tyrannical"
 
-            ,coalesce(round(cur.total_rating - pr.total_rating,1),0) as daily_rating_change
+            ,coalesce(round(cur.total_rating - pr.total_rating,1),cur.total_rating,0) as daily_rating_change
 
             , pr."Tazavesh: So\'leah\'s Gambit Fortified" as pr_GMBT_for
             , pr."Tazavesh: So\'leah\'s Gambit Tyrannical" as pr_GMBT_tyr
