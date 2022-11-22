@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<p><a href="{{url_for('index')}}">back</a></p>
+<p><a href="{{url_for('character_name',character_name=character['name'],realm=character['realm'],region=character['region'])}}">back</a></p>
+<p>{{character['name']}}</p>
 <h4>Armor</h4>
 <table>
 <thead>
@@ -22,9 +23,24 @@
 {% for cur_item in current_equip %}
 
 <tr>
+
+
+  {% if cur_item['item_slot']=='ring1' %}
+  <td>ring</td>
+  <td>{{ min_ring_item_level['min_ring_item_level'] }}</td>
+
+  {% elif cur_item['item_slot']=='trinket1' %}
+  <td>trinket</td>
+  <td>{{ min_trinket_item_level['min_trinket_item_level'] }}</td>
+
+  {% else %}
+
   <td>{{ cur_item['item_slot'] }}</td>
-  <td>{{ cur_item['item_level'] }}</td>
+  <td>{{ cur_item['item_level'] }} </td>
+    {% endif %}
   <td>
+
+
     {% for item in items %}
       {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Ruby Life Pools"  %}
     <span title="Boss - {{item['encounter_name']}}&#013;
@@ -66,65 +82,202 @@ Vers - {{item['versatility']}}">&#10003;</span>
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Algeth'ar Academy" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="The Nokhud Offensive"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="The Nokhud Offensive"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Court of Stars" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Algeth'ar Academy"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Algeth'ar Academy"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Halls of Valor" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Court of Stars"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Court of Stars"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Temple of the Jade Serpent" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Halls of Valor"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Halls of Valor"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Brackenhide Hollow" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Temple of the Jade Serpent"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Temple of the Jade Serpent"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Uldaman: Legacy of Tyr" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Brackenhide Hollow"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Brackenhide Hollow"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Neltharusw" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Uldaman: Legacy of Tyr"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Uldaman: Legacy of Tyr"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Halls of Infusion" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Neltharus"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Neltharus"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
   <td>
     {% for item in items %}
-    {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Dragon Isles" %}
-    {{ item['encounter_name'] }}<br>
-    {% endif %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Halls of Infusion"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Halls of Infusion"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
+    {% endfor %}
+  </td>
+  <td>
+    {% for item in items %}
+      {% if cur_item['item_lookup'].upper() == item['item_lookup'].upper() and cur_item['item_lookup'].upper()=="TRINKET" and item['instance_name']=="Dragon Isles"  %}
+    <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;
+&#013;Spell Description - {{item['spell_description']}}">&#10003;</span>
+      {% elif cur_item['item_lookup'].upper() == item['item_lookup'].upper() and item['instance_name']=="Dragon Isles"  %}
+<span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}">&#10003;</span>
+      {% endif %}
     {% endfor %}
   </td>
 
@@ -133,217 +286,193 @@ Vers - {{item['versatility']}}">&#10003;</span>
 {% endfor %}
 </table>
 
-<h4>Weaspons / Offhands</h4>
+<h4>Weapons / Offhands</h4>
+
+{% if current_equip_mainhand['item_level'] %}
+<p>Current Main Hand Ilvl - {{ current_equip_mainhand['item_level']}}</p>
+{% endif %}
+{% if current_equip_offhand['item_level'] %}
+<p>Current Offhand Ilvl - {{ current_equip_offhand['item_level']}}</p>
+{% else %}
+<p>No offhand equipped.</p>
+{% endif %}
+
 <table>
-<thead>
-  <th>Item Slot</th>
-  <th>Current Item Level</th>
-  <th>Ruby Life Pools (M+)</th>
-  <th>The Azure Vault (M+)</th>
-  <th>The Nokhud Offensive (M+)</th>
-  <th>Algeth'ar Academy (M+)</th>
-  <th>Court of Stars (M+)</th>
-  <th>Halls of Valor (M+)</th>
-  <th>Temple of the Jade Serpent (M+)</th>
-  <th>Brackenhide Hollow</th>
-  <th>Uldaman: Legacy of Tyr</th>
-  <th>Neltharus</th>
-  <th>Halls of Infusion</th>
-  <th>Dragon Isles (World Bosses)</th>
+  <thead>
+    <th>Item Slot</th>
+    <th>Current Item Level</th>
+    <th>Ruby Life Pools (M+)</th>
+    <th>The Azure Vault (M+)</th>
+    <th>The Nokhud Offensive (M+)</th>
+    <th>Algeth'ar Academy (M+)</th>
+    <th>Court of Stars (M+)</th>
+    <th>Halls of Valor (M+)</th>
+    <th>Temple of the Jade Serpent (M+)</th>
+    <th>Brackenhide Hollow</th>
+    <th>Uldaman: Legacy of Tyr</th>
+    <th>Neltharus</th>
+    <th>Halls of Infusion</th>
+    <th>Dragon Isles (World Bosses)</th>
 
-</thead>
+  </thead>
+  {% for distinct_combo in distinct_weapons_offhands %}
+  <tr>
+    <td>{{distinct_combo['inventory_type']}}</td>
+    <td>{{ distinct_combo['item_subclass']}}</td>
 
-<tr>
-  <td>mainhand</td>
-<td>
-  {% if current_equip_mainhand['item_level'] %}
-  {{ current_equip_mainhand['item_level'] }}
-  {% else %}
-  Not requipped
-  {% endif %}
-<td>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Ruby Life Pools"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
 
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="The Azure Vault"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
 
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Ruby Life Pools"  %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND' and  item['instance_name']=="The Azure Vault" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND' and  item['instance_name']=="The Nokhud Offensive" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND'  and item['instance_name']=="Algeth'ar Academy" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND'  and item['instance_name']=="Court of Stars" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Halls of Valor" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Temple of the Jade Serpent" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Brackenhide Hollow" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND'  and item['instance_name']=="Uldaman: Legacy of Tyr" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND'  and item['instance_name']=="Neltharusw" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Halls of Infusion" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'MAINHAND' and item['instance_name']=="Dragon Isles" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="The Nokhud Offensive"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Algeth'ar Academy"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
 
-</tr>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Court of Stars"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Halls of Valor"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
 
-<tr>
-  <td>offhand</td>
-<td>
-  {% if current_equip_offhand['item_level'] %}
-  {{ current_equip_offhand['item_level'] }}
-  {% else %}
-  Not requipped
-  {% endif %}
-<td>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Temple of the Jade Serpent"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Brackenhide Hollow"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
 
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Uldaman: Legacy of Tyr"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
 
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Ruby Life Pools"  %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND' and  item['instance_name']=="The Azure Vault" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND' and  item['instance_name']=="The Nokhud Offensive" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND'  and item['instance_name']=="Algeth'ar Academy" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND'  and item['instance_name']=="Court of Stars" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Halls of Valor" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Temple of the Jade Serpent" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Brackenhide Hollow" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND'  and item['instance_name']=="Uldaman: Legacy of Tyr" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND'  and item['instance_name']=="Neltharusw" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Halls of Infusion" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
-<td>
-  {% for item in items %}
-  {% if item['item_lookup'].upper() == 'OFFHAND' and item['instance_name']=="Dragon Isles" %}
-  {{ item['encounter_name']}} - {{item['item_subclass']}}<br>
-  {% endif %}
-  {% endfor %}
-</td>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Neltharus"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
 
-</tr>
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Halls of Infusion"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
+
+    <td>
+      {% for item in items %}
+        {% if distinct_combo['item_subclass'].upper() == item['item_subclass'].upper() and item['inventory_type'] == distinct_combo['inventory_type'] and item['instance_name']=="Dragon Isles"  %}
+      <span title="Boss - {{item['encounter_name']}}&#013;
+Item Name - {{item['item_name']}}&#013;
+Haste - {{item['haste_rating']}}&#013;
+Mastery - {{item['mastery_rating']}}&#013;
+Crit - {{item['crit_rating']}}&#013;
+Vers - {{item['versatility']}}&#013;">&#10003;</span>
+{% endif %}
+{% endfor %}
+    </td>
+
+  </tr>
+  {% endfor %}
 </table>

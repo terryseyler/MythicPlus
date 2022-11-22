@@ -73,6 +73,10 @@ def character_name(region,realm,character_name):
                                 or item_lookup in ('mainhand','offhand')
                             """.format(item_subclass)
                             ).fetchall()
+        distinct_weapons_offhands = conn.execute("""select distinct item_subclass,inventory_type from df_season_one_loot
+                                                    where item_lookup in ('offhand','mainhand')
+                                                    order by inventory_type,item_subclass
+                                                    """).fetchall()
         current_equip = cursor.execute("""select *
                                 from character_gear_ext
                                 where name = '{}'
@@ -82,6 +86,20 @@ def character_name(region,realm,character_name):
                                     and item_slot not in ('tabard','shirt','mainhand','offhand','ring2','trinket2')
                                     order by item_level
                                     """.format(character_name,realm,region)).fetchall()
+        min_ring_item_level = cursor.execute("""select min(item_level) as min_ring_item_level
+                                             from character_gear_ext
+                                             where name = '{}'
+                                                 and realm = '{}'
+                                                 and region = '{}'
+                                                 and last_crawled_at = (select max(last_crawled_at) from  character_gear_ext)
+                                                 and item_slot in ('ring1','ring2')""".format(character_name,realm,region)).fetchone()
+        min_trinket_item_level = cursor.execute("""select min(item_level) as min_trinket_item_level
+                                             from character_gear_ext
+                                             where name = '{}'
+                                                 and realm = '{}'
+                                                 and region = '{}'
+                                                 and last_crawled_at = (select max(last_crawled_at) from  character_gear_ext)
+                                                 and item_slot in ('trinket1','trinket2')""".format(character_name,realm,region)).fetchone()
 
         current_equip_mainhand = cursor.execute("""select *
                                 from character_gear_ext
@@ -101,7 +119,22 @@ def character_name(region,realm,character_name):
                                     and item_slot in ('offhand')
                                     order by item_level
                                     """.format(character_name,realm,region)).fetchone()
-        return render_template('upgrades.html',items=items,current_equip=current_equip,current_equip_mainhand=current_equip_mainhand,current_equip_offhand=current_equip_offhand)
+        character = cursor.execute("""select *
+                                ,last_crawled_at as last_crawled_cleansed
+                                from character_gear_ext
+                                where name = '{}'
+                                    and realm = '{}'
+                                    and region = '{}'
+                                order by last_crawled_at desc
+                                    """.format(character_name,realm,region)).fetchone()
+        return render_template('upgrades.html',items=items
+        ,current_equip=current_equip
+        ,current_equip_mainhand=current_equip_mainhand
+        ,current_equip_offhand=current_equip_offhand
+        ,min_ring_item_level=min_ring_item_level
+        ,min_trinket_item_level=min_trinket_item_level
+        ,distinct_weapons_offhands=distinct_weapons_offhands
+        ,character=character)
 
     conn = create_connection()
     cursor = conn.cursor()
