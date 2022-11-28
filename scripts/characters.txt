@@ -5,6 +5,11 @@
      ,"region":"us"
     },
     {
+    "name":"Boniffa"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
     "name":"Sulmadin"
      ,"server":"Illidan"
      ,"region":"us"

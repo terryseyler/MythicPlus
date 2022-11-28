@@ -125,6 +125,7 @@ def character_name(region,realm,character_name):
                                 where name = '{}'
                                     and realm = '{}'
                                     and region = '{}'
+                                    and item_slot not in ('tabard','shirt')
                                 order by last_crawled_at desc
                                     """.format(character_name,realm,region)).fetchone()
         return render_template('upgrades.html',items=items
@@ -148,7 +149,7 @@ def character_name(region,realm,character_name):
                                         where name = '{}'
                                             and realm = '{}'
                                             and region = '{}'
-                                        and item_slot not in ('tabard','shirt')
+
                                         order by last_crawled_at desc
                                             """.format(character_name,realm,region)).fetchall()
 
@@ -158,6 +159,7 @@ def character_name(region,realm,character_name):
                             where name = '{}'
                                 and realm = '{}'
                                 and region = '{}'
+                            and item_slot not in ('tabard','shirt')
                                 """.format(character_name,realm,region))
 
     data = results.fetchall()
@@ -176,6 +178,7 @@ def character_name(region,realm,character_name):
                             where name = '{}'
                                 and realm = '{}'
                                 and region = '{}'
+                            and item_slot not in ('tabard','shirt')
                             order by last_crawled_at desc
                                 """.format(character_name,realm,region)).fetchone()
     return render_template('character.html',data=data,character=character,distinct_crawl_dates=distinct_crawl_dates,all_mythic_plus_runs=all_mythic_plus_runs)
