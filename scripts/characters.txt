@@ -5,6 +5,11 @@
      ,"region":"us"
     },
     {
+    "name":"Astari"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
     "name":"Boniffa"
      ,"server":"Illidan"
      ,"region":"us"
