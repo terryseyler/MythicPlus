@@ -74,7 +74,7 @@ def create_connection():
             except Error as e:
                 print(e)
 try:
-    with open('/Users/terryseyler/git/warcraftLogs/App/scripts/characters.txt') as f:
+    with open('/Users/terryseyler/git/mythicplus/scripts/characters.txt') as f:
         data = f.read()
     f.close()
 except:
