@@ -56,7 +56,7 @@ def create_connection():
     except Error as e:
         #print(e)
         try:
-            file="/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/mplus.db"
+            file="/Users/terryseyler/git/MythicPlus/mplus.db"
             conn = sqlite3.connect(file
             ,detect_types=sqlite3.PARSE_DECLTYPES)
             conn.row_factory=sqlite3.Row
@@ -74,7 +74,7 @@ def create_connection():
             except Error as e:
                 print(e)
 try:
-    with open('/Users/terryseyler/Library/CloudStorage/OneDrive-Personal/git/warcraftLogs/App/scripts/characters.txt') as f:
+    with open('/Users/terryseyler/git/warcraftLogs/App/scripts/characters.txt') as f:
         data = f.read()
     f.close()
 except:
