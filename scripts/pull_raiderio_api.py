@@ -421,6 +421,10 @@ conn.execute("""update season_best_pivot_ext
                 set scoreboard_date = "{}"
                 ,daily_rating_change=0
                 where scoreboard_date is null""".format(now_string))
+conn.execute("""update season_best_pivot_ext
+set scoreboard_date = "2022-11-26"
+where name = 'Astari'
+""")
 conn.commit()
 conn.execute("drop table character_gear_ext")
 conn.execute("""create table character_gear_ext as
