@@ -51,9 +51,7 @@ def index():
     on upper(base.name) = upper(piv.name)
     and upper(base.realm) = upper(piv.realm)
     and upper(base.region) = upper(piv.region)
-    --where scoreboard_date = (select max(scoreboard_date) from  season_best_pivot_ext)
-    where scoreboard_date = "2022-11-26"
-
+    where scoreboard_date = (select max(scoreboard_date) from  season_best_pivot_ext)
     order by total_rating desc""").fetchall()
 
     max_date = cursor.execute('select max(scoreboard_date) as max_date from season_best_pivot_ext').fetchone()

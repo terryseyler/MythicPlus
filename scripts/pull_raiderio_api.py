@@ -456,9 +456,9 @@ left join season_best_pivot_df_s1 pr
             )
 conn.commit()
 conn.execute("""update season_best_pivot_ext
-set scoreboard_date = "2022-11-26"
+set scoreboard_date = "{}"
 ,daily_rating_change=0
-where scoreboard_date is null""")
+where scoreboard_date is null""".format(now_string))
 
 
 conn.commit()
