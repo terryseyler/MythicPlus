@@ -114,6 +114,12 @@ for char in character_json:
     print('{} being pulled'.format(char['name']))
     r = requests.get('https://raider.io/api/v1/characters/profile?region={}&realm={}&name={}&fields=mythic_plus_best_runs%2Cmythic_plus_highest_level_runs%2Cmythic_plus_alternate_runs%2Cgear%2Cmythic_plus_weekly_highest_level_runs%2Cmythic_plus_previous_weekly_highest_level_runs'.format(char['region'],char['server'],char['name']))
     r_bliz_equip = requests.get('https://us.api.blizzard.com/profile/wow/character/{0}/{1}/equipment?namespace=profile-us&locale=en_US&access_token={2}'.format(char['server'].lower(),char['name'].lower(),bliz_token))
+    r_bliz_profile = requests.get('https://us.api.blizzard.com/profile/wow/character/{0}/{1}?namespace=profile-us&locale=en_US&access_token={2}'.format(char['server'].lower(),char['name'].lower(),bliz_token))
+    if r_bliz_profile.status_code== 200:
+        j_profile = json.loads(r_bliz_profile.text)
+        active_spec_name = j_profile['active_spec']['name']
+    else:
+        print('could not pull player profile')
     affixes=[]
     if r.status_code == 200:
         print('{} api pulled'.format(char['name']))
@@ -180,7 +186,7 @@ for char in character_json:
                         ,dungeon['affixes'][0]['name']
                         ,dungeon['type']
                         ,dungeon['rating']
-                        ,j['active_spec_name']
+                        ,active_spec_name
                         ,j['active_spec_role']
                         ,j['class']
                             )
@@ -226,7 +232,7 @@ for char in character_json:
                         ,dungeon['url']
                         ,j['name'] + '-' + j['region'] + '-' + j['realm'] + '-' + dungeon['completed_at']
                         ,dungeon['affixes'][0]['name']
-                        ,j['active_spec_name']
+                        ,active_spec_name
                         ,j['active_spec_role']
                         ,j['class']
 
@@ -292,7 +298,7 @@ for char in character_json:
                      ,item['level']['value']
                      ,item['name']
                      ,char['name']+char['server']+char['region']+item['slot']['name'].lower().replace(" ", "")+item['name']+str(item['level']['value'])+str(derived_item_level)
-                        ,j['active_spec_name']
+                    ,active_spec_name
                         ,j['active_spec_role']
                         ,derived_item_level
                      ,j['class']
