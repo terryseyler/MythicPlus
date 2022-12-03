@@ -140,9 +140,10 @@ for char in character_json:
         for i,dungeon in enumerate(all_mythic_dungeons):
             all_mythic_dungeons[i]['affix_names'] = [affix['name'] for affix in dungeon['affixes']]
         #insert into mythic_plus_best_runs
-
-
+        total_rating =sum([dungeon['rating'] for dungeon in all_best_runs])
+        print('best runs')
         for dungeon in all_best_runs:
+            print(dungeon['name'])
             conn.execute(
                       """INSERT OR IGNORE INTO mythic_plus_best_runs (
                         name
@@ -190,8 +191,37 @@ for char in character_json:
                         ,j['active_spec_role']
                         ,j['class']
                             )
-            )
+             )
+            print(dungeon['name'])
             conn.commit()
+            print('new stuff')
+            conn.execute("""insert or replace into season_best_pivot_df_s1 (
+            name
+            ,realm
+            ,region
+
+
+            ,scoreboard_date
+            ,unique_key
+            ),
+            VALUES(?,?,?,?,?)
+
+            """,(
+                             j['name']
+                                     ,j['realm']
+                                     ,j['region']
+                                     ,now_string
+                                     ,j['name']+j['realm']+j['region']+now_string
+                         )
+                         )
+            conn.execute("""update season_best_pivot_df_s1
+            set "{} {}" =  {}
+            ,total_rating = {}
+            where name = "{}"
+            and scoreboard_date = "{}" """.format(dungeon['name'],dungeon['affixes'][0]['name'],dungeon['score'],total_rating,j['name'],now_string))
+            print('new complete')
+            conn.commit()
+        print('all_mythic_dungeons')
         for dungeon in all_mythic_dungeons:
             conn.execute(
                       """INSERT OR IGNORE INTO all_mythic_plus_runs (
@@ -270,7 +300,7 @@ for char in character_json:
             derived_item_level = sum_item_level / item_count
         except Exception as e:
             derived_item_level = 0
-
+        print('gear')
         for item in j_equip['equipped_items']:
             conn.execute(
                     """INSERT OR REPLACE INTO character_gear (
@@ -351,63 +381,65 @@ conn.execute("""create table season_best_pivot_ext as
             ,cur.scoreboard_date
             ,coalesce(cur.total_rating,0) as total_rating
 
-            ,coalesce(cur."Tazavesh: So\'leah\'s Gambit Fortified","") as "Tazavesh: So\'leah\'s Gambit Fortified"
-            ,coalesce(cur."Tazavesh: So\'leah\'s Gambit Tyrannical","") as "Tazavesh: So\'leah\'s Gambit Tyrannical"
+,coalesce(cur."Algeth'ar Academy Fortified","") as "Algeth'ar Academy Fortified"
+,coalesce(cur."Algeth'ar Academy Tyrannical","") as "Algeth'ar Academy Tyrannical"
 
-            ,coalesce(cur."Tazavesh: Streets of Wonder Fortified","") as "Tazavesh: Streets of Wonder Fortified"
-            ,coalesce(cur."Tazavesh: Streets of Wonder Tyrannical","") as "Tazavesh: Streets of Wonder Tyrannical"
+,coalesce(cur."Court of Stars Fortified","") as "Court of Stars Fortified"
+,coalesce(cur."Court of Stars Tyrannical","") as "Court of Stars Tyrannical"
 
-            ,coalesce(cur."Return to Karazhan: Upper Fortified","")  as "Return to Karazhan: Upper Fortified"
-            ,coalesce(cur."Return to Karazhan: Upper Tyrannical","")  as "Return to Karazhan: Upper Tyrannical"
+,coalesce(cur."Halls of Valor Fortified","")  as "Halls of Valor Fortified"
+,coalesce(cur."Halls of Valor Tyrannical","")  as "Halls of Valor Tyrannical"
 
-            ,coalesce(cur."Return to Karazhan: Lower Fortified","") as "Return to Karazhan: Lower Fortified"
-            ,coalesce(cur."Return to Karazhan: Lower Tyrannical","") as "Return to Karazhan: Lower Tyrannical"
+,coalesce(cur."Ruby Life Pools Fortified","") as "Ruby Life Pools Fortified"
+,coalesce(cur."Ruby Life Pools Tyrannical","") as "Ruby Life Pools Tyrannical"
 
-            ,coalesce(cur."Iron Docks Fortified","") as "Iron Docks Fortified"
-            ,coalesce(cur."Iron Docks Tyrannical","") as "Iron Docks Tyrannical"
+,coalesce(cur."Shadowmoon Burial Grounds Fortified","") as "Shadowmoon Burial Grounds Fortified"
+,coalesce(cur."Shadowmoon Burial Grounds Tyrannical","") as "Shadowmoon Burial Grounds Tyrannical"
 
-            ,coalesce(cur."Grimrail Depot Fortified","")  as "Grimrail Depot Fortified"
-            ,coalesce(cur."Grimrail Depot Tyrannical","") as "Grimrail Depot Tyrannical"
+,coalesce(cur."Temple of the Jade Serpent Fortified","") as "Temple of the Jade Serpent Fortified"
+,coalesce(cur."Temple of the Jade Serpent Tyrannical","") as "Temple of the Jade Serpent Tyrannical"
 
-            ,coalesce(cur."Mechagon Workshop Fortified","") as "Mechagon Workshop Fortified"
-            ,coalesce(cur."Mechagon Workshop Tyrannical","") as "Mechagon Workshop Tyrannical"
+,coalesce(cur."The Azure Vault Fortified","")  as "The Azure Vault Fortified"
+,coalesce(cur."The Azure Vault Tyrannical","") as "The Azure Vault Tyrannical"
 
-            ,coalesce(cur."Mechagon Junkyard Fortified","") as "Mechagon Junkyard Fortified"
-            ,coalesce(cur."Mechagon Junkyard Tyrannical","") as "Mechagon Junkyard Tyrannical"
+,coalesce(cur."The Nokhud Offensive Fortified","") as "The Nokhud Offensive Fortified"
+,coalesce(cur."The Nokhud Offensive Tyrannical","") as "The Nokhud Offensive Tyrannical"
 
-            ,coalesce(round(cur.total_rating - pr.total_rating,1),cur.total_rating,0) as daily_rating_change
 
-            , pr."Tazavesh: So\'leah\'s Gambit Fortified" as pr_GMBT_for
-            , pr."Tazavesh: So\'leah\'s Gambit Tyrannical" as pr_GMBT_tyr
 
-            , pr."Tazavesh: Streets of Wonder Fortified" as pr_STRT_for
-            ,   pr."Tazavesh: Streets of Wonder Tyrannical" as pr_STRT_tyr
+,coalesce(round(cur.total_rating - pr.total_rating,1),cur.total_rating,0) as daily_rating_change
 
-            ,  pr."Return to Karazhan: Upper Fortified" as pr_UPPR_for
-            ,  pr."Return to Karazhan: Upper Tyrannical" as pr_UPPR_tyr
+, pr."Algeth'ar Academy Fortified" as pr_AA_for
+, pr."Algeth'ar Academy Tyrannical" as pr_AA_tyr
 
-            ,  pr."Return to Karazhan: Lower Fortified" as pr_LOWR_for
-            ,  pr."Return to Karazhan: Lower Tyrannical" as pr_LOWR_tyr
+, pr."Court of Stars Fortified" as pr_COS_for
+, pr."Court of Stars Tyrannical" as pr_COS_tyr
 
-            ,   pr."Iron Docks Fortified" as pr_ID_for
-            ,   pr."Iron Docks Tyrannical" as pr_ID_tyr
+            ,  pr."Halls of Valor Fortified" as pr_HOV_for
+            ,  pr."Halls of Valor Tyrannical" as pr_HOV_tyr
 
-            ,   pr."Grimrail Depot Fortified" as pr_GD_for
-            ,  pr."Grimrail Depot Tyrannical" as pr_GD_tyr
+            ,  pr."Ruby Life Pools Fortified" as pr_RUBY_for
+            ,  pr."Ruby Life Pools Tyrannical" as pr_RUBY_tyr
 
-            ,  pr."Mechagon Workshop Fortified" as pr_WKSP_for
-            ,  pr."Mechagon Workshop Tyrannical" as pr_WKSP_tyr
+            ,   pr."Shadowmoon Burial Grounds Fortified" as pr_SBG_for
+            ,   pr."Shadowmoon Burial Grounds Tyrannical" as pr_SBG_tyr
 
-            ,  pr."Mechagon Junkyard Fortified" as pr_JUNK_for
-            ,  pr."Mechagon Junkyard Tyrannical" as pr_JUNK_tyr
+            ,   pr."Temple of the Jade Serpent Fortified" as pr_JADE_for
+            ,  pr."Temple of the Jade Serpent Tyrannical" as pr_JADE_tyr
+
+            ,  pr."The Azure Vault Fortified" as pr_AV_for
+            ,  pr."The Azure Vault Tyrannical" as pr_AV_tyr
+
+            ,  pr."The Nokhud Offensive Fortified" as pr_NOKH_for
+            ,  pr."The Nokhud Offensive Tyrannical" as pr_NOKH_tyr
 
             from base_characters base
-            left join season_best_pivot cur
+            left join season_best_pivot_df_s1 cur
             on base.name=cur.name
             and base.realm=cur.realm
             and base.region=cur.region
 
-            left join season_best_pivot pr
+left join season_best_pivot_df_s1 pr
             on pr.name = cur.name
             and pr.realm = cur.realm
             and pr.region = cur.region
@@ -427,6 +459,7 @@ conn.execute("""update season_best_pivot_ext
 set scoreboard_date = "2022-11-26"
 ,daily_rating_change=0
 where scoreboard_date is null""")
+
 
 conn.commit()
 conn.execute("drop table character_gear_ext")
