@@ -5,6 +5,16 @@
      ,"region":"us"
     },
     {
+    "name":"Zarney"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Itemdrop"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
     "name":"Astari"
      ,"server":"Illidan"
      ,"region":"us"
