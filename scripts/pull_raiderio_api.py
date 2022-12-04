@@ -100,6 +100,25 @@ now_string = dt.datetime.now().strftime("%Y-%m-%d")
 now__time_string = dt.datetime.now().strftime("%m-%d-%Y %H:%M")
 for char in character_json:
     conn=create_connection()
+    conn.execute("""insert or ignore into season_best_pivot_df_s1 (
+    name
+    ,realm
+    ,region
+
+
+    ,scoreboard_date
+    ,unique_key
+    )
+    VALUES(?,?,?,?,?)
+
+    """,(
+                        char['name']
+                                ,char['server']
+                                ,char['region']
+                                ,now_string
+                                ,char['name']+char['server']+char['region']+now_string
+                    )
+                    )
     conn.execute(
     """insert or IGNORE into base_characters(
         name
@@ -145,7 +164,7 @@ for char in character_json:
         for dungeon in all_best_runs:
             print(dungeon['name'])
             conn.execute(
-                      """INSERT OR IGNORE INTO mythic_plus_best_runs (
+                      """INSERT OR INTO mythic_plus_best_runs (
                         name
                         ,region
                         ,realm
@@ -195,30 +214,16 @@ for char in character_json:
             print(dungeon['name'])
             conn.commit()
             print('new stuff')
-            conn.execute("""insert or replace into season_best_pivot_df_s1 (
-            name
-            ,realm
-            ,region
 
-
-            ,scoreboard_date
-            ,unique_key
-            ),
-            VALUES(?,?,?,?,?)
-
-            """,(
-                             j['name']
-                                     ,j['realm']
-                                     ,j['region']
-                                     ,now_string
-                                     ,j['name']+j['realm']+j['region']+now_string
-                         )
-                         )
             conn.execute("""update season_best_pivot_df_s1
-            set "{} {}" =  {}
-            ,total_rating = {}
-            where name = "{}"
-            and scoreboard_date = "{}" """.format(dungeon['name'],dungeon['affixes'][0]['name'],dungeon['score'],total_rating,j['name'],now_string))
+            set "{0} {1}" =  {2}
+            ,total_rating = {3}
+            where name = "{4}"
+            and scoreboard_date = "{5}" """.format(dungeon['name']
+                                    ,dungeon['affixes'][0]['name']
+                                    ,dungeon['score']
+                                    ,total_rating,j['name']
+                                    ,now_string))
             print('new complete')
             conn.commit()
         print('all_mythic_dungeons')

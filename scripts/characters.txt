@@ -95,8 +95,8 @@
      ,"region":"us"
     },
      {
-    "name":"Hinkledire"
-     ,"server":"Korgath"
+    "name":"Mcmonk"
+     ,"server":"Illidan"
      ,"region":"us"
     },
      {
