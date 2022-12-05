@@ -109,7 +109,7 @@
      ,"region":"us"
     },
     {"name":"Ddfo"
-     ,"server":"Anetheron"
+     ,"server":"Illidan"
      ,"region":"us"
     }
 ]

@@ -53,7 +53,7 @@ def create_connection():
         #engine = create_engine("sqlite:///"+file)
         return conn
 
-    except Error as e:
+    except Exception as e:
         #print(e)
         try:
             file="/Users/terryseyler/git/MythicPlus/mplus.db"
@@ -62,7 +62,7 @@ def create_connection():
             conn.row_factory=sqlite3.Row
             #engine = create_engine("sqlite:///"+file)
             return conn
-        except Error as e:
+        except Exception as e:
             #print(e)
             try:
                 file="C:/Users/tlsey/git/MythicPlus/mplus.db"
@@ -71,7 +71,7 @@ def create_connection():
                 conn.row_factory=sqlite3.Row
                 #engine = create_engine("sqlite:///"+file)
                 return conn
-            except Error as e:
+            except Exception as e:
                 print(e)
 try:
     with open('/Users/terryseyler/git/mythicplus/scripts/characters.txt') as f:
@@ -87,17 +87,21 @@ except:
             with open("/home/terrysey/MythicPlus/scripts/characters.txt") as f:
                 data = f.read()
             f.close()
-        except Error as e:
+        except Exception as e:
             print(e)
 conn = create_connection()
 conn.execute('delete from mythic_plus_best_runs')
 conn.commit()
-conn.close()
+
 # reconstructing the data as a dictionary
 character_json = json.loads(data)
 
 now_string = dt.datetime.now().strftime("%Y-%m-%d")
 now__time_string = dt.datetime.now().strftime("%m-%d-%Y %H:%M")
+conn.execute('delete from base_characters')
+conn.execute('delete from season_best_pivot_df_s1')
+conn.commit()
+conn.close()
 for char in character_json:
     conn=create_connection()
     conn.execute("""insert or ignore into season_best_pivot_df_s1 (
@@ -202,7 +206,7 @@ for char in character_json:
                         ,dungeon['score']
                         ,str(dungeon['affix_names'])
                         ,dungeon['url']
-                        ,j['name'] + '-' + j['region'] + '-' + j['realm'] + '-' + dungeon['dungeon'] + dungeon['type']
+                        ,j['name']  + j['region']  + j['realm'] + '-' + dungeon['dungeon'] + dungeon['type']
                         ,dungeon['affixes'][0]['name']
                         ,dungeon['type']
                         ,dungeon['rating']
@@ -236,7 +240,7 @@ for char in character_json:
                         ,dungeon
                         ,short_name
                         ,mythic_level
-                        ,completed_at
+                        ,completed_ at
                         ,clear_time_ms
                         ,num_keystone_upgrades
                         ,map_challenge_mode_id
@@ -259,7 +263,7 @@ for char in character_json:
                         ,dungeon['mythic_level']
                         ,dungeon['completed_at']
                         ,dungeon['clear_time_ms']
-                        ,dungeon['num_keystone_upgrades']
+                        ,dungeon['num_keystone_upgrades'] 
                         ,dungeon['map_challenge_mode_id']
                         ,dungeon['zone_id']
                         ,dungeon['score']
@@ -439,7 +443,7 @@ conn.execute("""create table season_best_pivot_ext as
             ,  pr."The Nokhud Offensive Tyrannical" as pr_NOKH_tyr
 
             from base_characters base
-            left join season_best_pivot_df_s1 cur
+            inner join  season_best_pivot_df_s1 cur
             on base.name=cur.name
             and base.realm=cur.realm
             and base.region=cur.region
