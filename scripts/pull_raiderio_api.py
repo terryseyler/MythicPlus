@@ -164,9 +164,9 @@ for char in character_json:
             all_mythic_dungeons[i]['affix_names'] = [affix['name'] for affix in dungeon['affixes']]
         #insert into mythic_plus_best_runs
         total_rating =sum([dungeon['rating'] for dungeon in all_best_runs])
-        print('best runs')
+        #print('best runs')
         for dungeon in all_best_runs:
-            print(dungeon['name'])
+            #print(dungeon['name'])
             conn.execute(
                       """INSERT OR INTO mythic_plus_best_runs (
                         name
@@ -215,9 +215,9 @@ for char in character_json:
                         ,j['class']
                             )
              )
-            print(dungeon['name'])
+            #print(dungeon['name'])
             conn.commit()
-            print('new stuff')
+            #print('new stuff')
 
             conn.execute("""update season_best_pivot_df_s1
             set "{0} {1}" =  {2}
@@ -228,9 +228,9 @@ for char in character_json:
                                     ,dungeon['score']
                                     ,total_rating,j['name']
                                     ,now_string))
-            print('new complete')
+            #print('new complete')
             conn.commit()
-        print('all_mythic_dungeons')
+        #print('all_mythic_dungeons')
         for dungeon in all_mythic_dungeons:
             conn.execute(
                       """INSERT OR IGNORE INTO all_mythic_plus_runs (
@@ -309,7 +309,7 @@ for char in character_json:
             derived_item_level = sum_item_level / item_count
         except Exception as e:
             derived_item_level = 0
-        print('gear')
+        #print('gear')
         for item in j_equip['equipped_items']:
             conn.execute(
                     """INSERT OR REPLACE INTO character_gear (

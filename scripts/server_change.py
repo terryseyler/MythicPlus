@@ -1,10 +1,9 @@
 import sqlite3
-new_character_name = "Mcmonk"
+new_character_name = "Monkgov"
 new_realm = "Illidan"
 new_region ='us'
-
-old_character_name="Hinkledire"
-old_realm="Korgath"
+old_character_name="Mcmonk"
+old_realm="Illidan"
 old_region ='us'
 unique_key_new = "{}{}{}".format(new_character_name
                                 ,new_realm

@@ -95,7 +95,7 @@
      ,"region":"us"
     },
      {
-    "name":"Mcmonk"
+    "name":"Monkgov"
      ,"server":"Illidan"
      ,"region":"us"
     },
