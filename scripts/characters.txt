@@ -5,6 +5,11 @@
      ,"region":"us"
     },
     {
+    "name":"Felthurn"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
     "name":"Zarney"
      ,"server":"Illidan"
      ,"region":"us"

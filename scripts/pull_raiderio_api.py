@@ -263,7 +263,7 @@ for char in character_json:
                         ,dungeon['mythic_level']
                         ,dungeon['completed_at']
                         ,dungeon['clear_time_ms']
-                        ,dungeon['num_keystone_upgrades'] 
+                        ,dungeon['num_keystone_upgrades']
                         ,dungeon['map_challenge_mode_id']
                         ,dungeon['zone_id']
                         ,dungeon['score']
