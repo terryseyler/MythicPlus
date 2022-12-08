@@ -105,15 +105,37 @@
      ,"region":"us"
     },
      {
-    "name":"Astaruid"
+     "name":"Astaruid"
      ,"server":"Illidan"
      ,"region":"us"
     },
-    {"name":"Terry"
+    {
+     "name":"Terry"
      ,"server":"Anetheron"
      ,"region":"us"
     },
-    {"name":"Ddfo"
+    {
+    "name":"Ddfo"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Atolas"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Alphabets"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Diestrasza"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Ruinred"
      ,"server":"Illidan"
      ,"region":"us"
     }

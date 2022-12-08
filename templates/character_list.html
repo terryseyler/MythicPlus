@@ -12,7 +12,7 @@
 
 {% for char in character_list %}
 <tr>
-    <td>{{char['name']}}</td>
+    <td><a href="{{url_for('character_name',character_name=char['name'],realm=char['realm'],region=char['region'])}}">{{char['name']}}</a></td>
     <td>{{char['derived_item_level']}}</td>
 </tr>
 {% endfor %}
