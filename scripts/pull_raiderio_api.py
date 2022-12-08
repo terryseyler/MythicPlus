@@ -336,7 +336,7 @@ for char in character_json:
                      ,item['slot']['name'].lower().replace(" ", "")
                      ,item['level']['value']
                      ,item['name']
-                     ,char['name']+char['server']+char['region']+item['slot']['name'].lower().replace(" ", "")+item['name']+str(item['level']['value'])+str(derived_item_level)
+                     ,char['name']+char['server']+char['region']+item['slot']['name'].lower().replace(" ", "")+str(derived_item_level)
                     ,active_spec_name
                         ,j['active_spec_role']
                         ,derived_item_level
