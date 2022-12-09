@@ -138,5 +138,10 @@
     "name":"Ruinred"
      ,"server":"Illidan"
      ,"region":"us"
+    },
+    {
+    "name":"Martahk"
+     ,"server":"Illidan"
+     ,"region":"us"
     }
 ]
