@@ -143,5 +143,15 @@
     "name":"Martahk"
      ,"server":"Illidan"
      ,"region":"us"
+    },
+    {
+    "name":"Rikkia"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
+    "name":"Hanavviixx"
+     ,"server":"Illidan"
+     ,"region":"us"
     }
 ]
