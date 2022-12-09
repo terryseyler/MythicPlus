@@ -61,7 +61,7 @@ def index():
 @app.route('/character_list')
 def character_list():
     conn=create_connection()
-    character_list =conn.execute("""Select Name,realm,region,round(avg(derived_item_level),1) as derived_item_level
+    character_list =conn.execute("""Select Name,realm,region,round(avg(derived_item_level),2) as derived_item_level
     from character_gear_ext
     where last_crawled_at = (select max(last_crawled_at) from character_gear_ext)
     group by Name,realm,region

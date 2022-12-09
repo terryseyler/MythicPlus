@@ -150,7 +150,7 @@
      ,"region":"us"
     },
     {
-    "name":"Hanavviixx"
+    "name":"Hanaviixx"
      ,"server":"Illidan"
      ,"region":"us"
     }
