@@ -10,19 +10,19 @@
 
 <table class="scoreboard">
 <thead>
-    <th class="scoreboard_char_name">Character Name</td>
-
+    <th>Character Name</td>
+    <th>Item Level</th>
 <!---for distinct column names!-->
-    <th class="scoreboard_rating">AA</th>
-    <th class="scoreboard_rating">COS</th>
-    <th class="scoreboard_rating">HOV</th>
-    <th class="scoreboard_rating">RUBY</th>
-    <th class="scoreboard_rating">SBG</th>
-    <th class="scoreboard_rating">JADE</th>
-    <th class="scoreboard_rating">AV</th>
-    <th class="scoreboard_rating">NOKH</th>
-    <th class="scoreboard_rating">Total Rating</th>
-    <th class="scoreboard_rating">Weekly Rating Change</th>
+    <th>AA</th>
+    <th>COS</th>
+    <th>HOV</th>
+    <th>RUBY</th>
+    <th>SBG</th>
+    <th>JADE</th>
+    <th>AV</th>
+    <th>NOKH</th>
+    <th>Total Rating</th>
+    <th>Weekly Rating Change</th>
 <!---end for!-->
     </thead>
 
@@ -30,7 +30,7 @@
 
 <tr>
     <td><a href="{{url_for('character_name',character_name=data['name'],realm=data['realm'],region=data['region'])}}">{{ data['name'] }} - {{data['realm']}}</a></td>
-
+    <td>{{ data['derived_item_level'] }}</td>
 <!--Grimrail F-->
     <td>{% if data['pr_GD_for'] !=  data['Grimrail Depot Fortified'] and data['pr_GD_for'] %}
 

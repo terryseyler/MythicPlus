@@ -11,13 +11,13 @@ table.scoreboard {
   width: 100%;
   border: 1px solid #ddd;
 }
-.scoreboard tr, .scoreboard td, .scorboard th{
+.scoreboard tr td, .scoreboard thead th {
   text-align: center;
-  width: 8%;
+  width: 8%
 }
-.scoreboard,tr,td:nth-child(1){
+.scoreboard tr td:nth-child(1){
   text-align: left;
-  width: 20%;
+  width: 12%;
 }
 
 table.character {

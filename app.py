@@ -47,12 +47,29 @@ def create_connection():
 def index():
     conn = create_connection()
     cursor  = conn.cursor()
-    data = cursor.execute("""select * from base_characters base left join season_best_pivot_ext piv
+    data = cursor.execute("""select scoreboard.*
+    ,char.derived_item_level
+     from 
+    (
+        select * from base_characters base left join season_best_pivot_ext piv
     on upper(base.name) = upper(piv.name)
     and upper(base.realm) = upper(piv.realm)
     and upper(base.region) = upper(piv.region)
     where scoreboard_date = (select max(scoreboard_date) from  season_best_pivot_ext)
-    order by total_rating desc""").fetchall()
+    order by total_rating desc
+    ) scoreboard
+    left join 
+    (
+        Select Name,realm,region,round(avg(derived_item_level),1) as derived_item_level
+        from character_gear_ext
+        where last_crawled_at = (select max(last_crawled_at) from character_gear_ext)
+        group by Name,realm,region
+    )char
+    on scoreboard.name  = char.name
+    and scoreboard.realm = char.realm
+    and scoreboard.region=char.region
+    order by char.derived_item_level desc
+    """).fetchall()
 
     max_date = cursor.execute('select max(scoreboard_date) as max_date from season_best_pivot_ext').fetchone()
     print('hi')
