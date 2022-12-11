@@ -1,9 +1,23 @@
 
+th, td {
+  text-align: left;
+  vertical-align:top;
+  padding: 0px;
+  font-size: 13px;
+}
 table.scoreboard {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
   border: 1px solid #ddd;
+}
+.scoreboard,tr,td,th{
+  text-align: center;
+  width: 8%;
+}
+.scoreboard,tr,td:nth-child(1){
+  text-align: left;
+  width: 20%;
 }
 
 table.character {
@@ -20,22 +34,12 @@ table.upgrade_character {
   border: 1px solid #ddd;
 }
 
-th, td {
-  text-align: left;
-  vertical-align:top;
-  padding: 0px;
-  font-size: 13px;
-}
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
-td.scoreboard_char_name {
-  width:20%;
-}
-td.scoreboard_attributes {
-  width:8%;
-}
+
+
 .row {
   display: flex;
   margin-left:-5px;
