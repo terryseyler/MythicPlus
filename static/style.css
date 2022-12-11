@@ -11,7 +11,7 @@ table.scoreboard {
   width: 100%;
   border: 1px solid #ddd;
 }
-.scoreboard,tr,td,th{
+.scoreboard tr, .scoreboard td, .scorboard th{
   text-align: center;
   width: 8%;
 }
