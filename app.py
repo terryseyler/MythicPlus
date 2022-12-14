@@ -68,7 +68,7 @@ def index():
     on scoreboard.name  = char.name
     and scoreboard.realm = char.realm
     and scoreboard.region=char.region
-    order by char.derived_item_level desc
+    order by total_rating desc
     """).fetchall()
 
     max_date = cursor.execute('select max(scoreboard_date) as max_date from season_best_pivot_ext').fetchone()

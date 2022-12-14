@@ -31,170 +31,170 @@
 <tr>
     <td><a href="{{url_for('character_name',character_name=data['name'],realm=data['realm'],region=data['region'])}}">{{ data['name'] }} - {{data['realm']}}</a></td>
     <td>{{ data['derived_item_level'] }}</td>
-<!--Grimrail F-->
-    <td>{% if data['pr_GD_for'] !=  data['Grimrail Depot Fortified'] and data['pr_GD_for'] %}
+<!--Academy F-->
+    <td>{% if data['pr_AA_for'] !=  data['Algeth\'ar Academy Fortified'] and data['pr_AA_for'] %}
 
-    {{ data['Grimrail Depot Fortified']}} ( {{data['pr_GD_for']}}  )
+    {{ data['Algeth\'ar Academy Fortified']}} ( {{data['pr_AA_for']}}  )
 
     {% else %}
-      {{ data['Grimrail Depot Fortified'] }}
+      {{ data['Algeth\'ar Academy Fortified'] }}
     {% endif %}
     <br>
 
-<!--Grimrail T-->
-    {% if data['pr_GD_tyr'] !=  data['Grimrail Depot Tyrannical'] and data['pr_GD_tyr']%}
+<!--Academy T-->
+    {% if data['pr_AA_tyr'] !=  data['Algeth\'ar Academy Tyrannical'] and data['pr_AA_tyr']%}
 
 
-    {{ data['Grimrail Depot Tyrannical']}} ({{data['pr_GD_tyr']}})
+    {{ data['Algeth\'ar Academy Tyrannical']}} ({{data['pr_AA_tyr']}})
 
     {% else %}
-      {{ data['Grimrail Depot Tyrannical'] }}
+      {{ data['Algeth\'ar Academy Tyrannical'] }}
     {% endif %}</td>
 
-<!--ID F-->
-    <td>{% if data['pr_ID_for'] !=  data['Iron Docks Fortified'] and data['pr_ID_for']%}
+<!--COS F-->
+    <td>{% if data['pr_COS_for'] !=  data['Court of Stars Fortified'] and data['pr_COS_for']%}
 
-    {{ data['Iron Docks Fortified']}} ( {{data['pr_ID_for']}}  )
+    {{ data['Court of Stars Fortified']}} ( {{data['pr_COS_for']}}  )
 
     {% else %}
-      {{ data['Iron Docks Fortified'] }}
+      {{ data['Court of Stars Fortified'] }}
     {% endif %}
     <br>
 
-<!--ID T-->
-    {% if data['pr_ID_tyr'] !=  data['Iron Docks Tyrannical'] and data['pr_ID_tyr'] %}
+<!--COS T-->
+    {% if data['pr_COS_tyr'] !=  data['Court of Stars Tyrannical'] and data['pr_COS_tyr'] %}
 
-    {{ data['Iron Docks Tyrannical']}} ( {{data['pr_ID_tyr']}}
+    {{ data['Court of Stars Tyrannical']}} ( {{data['pr_COS_tyr']}}
 
     {% else %}
-      {{ data['Iron Docks Tyrannical'] }}
+      {{ data['Court of Stars Tyrannical'] }}
     {% endif %}</td>
 
 
-<!--JUNK F-->
-    <td>{% if data['pr_JUNK_for'] !=  data['Mechagon Junkyard Fortified'] and data['pr_JUNK_for'] %}
+<!--HOV F-->
+    <td>{% if data['pr_HOV_for'] !=  data['Halls of Valor Fortified'] and data['pr_HOV_for'] %}
 
-    {{ data['Mechagon Junkyard Fortified']}} ( {{data['pr_JUNK_for']}}  )
+    {{ data['Halls of Valor Fortified']}} ( {{data['pr_HOV_for']}}  )
 
     {% else %}
-      {{ data['Mechagon Junkyard Fortified'] }}
+      {{ data['Halls of Valor Fortified'] }}
     {% endif %}
     <br>
 
-<!--JUNK T-->
-    {% if data['pr_JUNK_tyr'] !=  data['Mechagon Junkyard Tyrannical'] and data['pr_JUNK_tyr'] %}
+<!--HOV T-->
+    {% if data['pr_HOV_tyr'] !=  data['Halls of Valor Tyrannical'] and data['pr_HOV_tyr'] %}
 
-    {{ data['Mechagon Junkyard Tyrannical']}} ( {{data['pr_JUNK_tyr']}}
+    {{ data['Halls of Valor Tyrannical']}} ( {{data['pr_HOV_tyr']}}
 
     {% else %}
-      {{ data['Mechagon Junkyard Tyrannical'] }}
+      {{ data['Halls of Valor Tyrannical'] }}
     {% endif %}</td>
 
 <!--WKSP F-->
-    <td>{% if data['pr_WKSP_for'] !=  data['Mechagon Workshop Fortified'] and data['pr_WKSP_for'] %}
+    <td>{% if data['pr_RUBY_for'] !=  data['Ruby Life Pools Fortified'] and data['pr_RUBY_for'] %}
 
-    {{ data['Mechagon Workshop Fortified']}} ( {{data['pr_WKSP_for']}}  )
+    {{ data['Ruby Life Pools Fortified']}} ( {{data['pr_RUBY_for']}}  )
 
     {% else %}
 
-    {{ data['Mechagon Workshop Fortified'] }}
+    {{ data['Ruby Life Pools Fortified'] }}
 
     {% endif %}
     <br>
 
 <!--WKSP T-->
-    {% if data['pr_WKSP_tyr'] !=  data['Mechagon Workshop Tyrannical'] and data['pr_WKSP_tyr'] %}
+    {% if data['pr_RUBY_tyr'] !=  data['Ruby Life Pools Tyrannical'] and data['pr_RUBY_tyr'] %}
 
-    {{ data['Mechagon Workshop Tyrannical']}} ( {{data['pr_WKSP_tyr']}}
+    {{ data['Ruby Life Pools Tyrannical']}} ( {{data['pr_RUBY_tyr']}}
 
     {% else %}
 
-    {{ data['Mechagon Workshop Tyrannical'] }}
+    {{ data['Ruby Life Pools Tyrannical'] }}
 
     {% endif %}
     </td>
 
-<!--Lower F-->
-    <td>{% if data['pr_LOWR_for'] !=  data['Return to Karazhan: Lower Fortified'] and data['pr_LOWR_for'] %}
+<!--SBG F-->
+    <td>{% if data['pr_SBG_for'] !=  data['Shadowmoon Burial Grounds Fortified'] and data['pr_SBG_for'] %}
 
-    {{ data['Return to Karazhan: Lower Fortified']}} ( {{data['pr_LOWR_for']}}  )
+    {{ data['Shadowmoon Burial Grounds Fortified']}} ( {{data['pr_SBG_for']}}  )
 
     {% else %}
 
-    {{ data['Return to Karazhan: Lower Fortified'] }}
+    {{ data['Shadowmoon Burial Grounds Fortified'] }}
 
     {% endif %}
     <br>
 
-<!--Lower T-->
-    {% if data['pr_LOWR_tyr'] !=  data['Return to Karazhan: Lower Tyrannical']  and data['pr_LOWR_tyr']%}
+<!--SBG T-->
+    {% if data['pr_SBG_tyr'] !=  data['Shadowmoon Burial Grounds Tyrannical']  and data['pr_SBG_tyr']%}
 
-    {{ data['Return to Karazhan: Lower Tyrannical']}} ( {{data['pr_LOWR_tyr']}}
+    {{ data['Shadowmoon Burial Grounds Tyrannical']}} ( {{data['pr_SBG_tyr']}}
 
     {% else %}
-    {{ data['Return to Karazhan: Lower Tyrannical'] }}
+    {{ data['Shadowmoon Burial Grounds Tyrannical'] }}
     {% endif %}</td>
 
-<!--UPPER F-->
-    <td>{% if data['pr_UPPR_for'] !=  data['Return to Karazhan: Upper Fortified'] and data['pr_UPPR_for']%}
+<!--JADE F-->
+    <td>{% if data['pr_JADE_for'] !=  data['Temple of the Jade Serpent Fortified'] and data['pr_JADE_for']%}
 
-    {{ data['Return to Karazhan: Upper Fortified']}} ( {{data['pr_UPPR_for']}}  )
+    {{ data['Temple of the Jade Serpent Fortified']}} ( {{data['pr_JADE_for']}}  )
 
     {% else %}
 
-    {{ data['Return to Karazhan: Upper Fortified'] }}
+    {{ data['Temple of the Jade Serpent Fortified'] }}
 
     {% endif %}
     <br>
 
-<!--Upper T-->
-    {% if data['pr_UPPR_tyr'] !=  data['Return to Karazhan: Upper Tyrannical'] and data['pr_UPPR_tyr'] %}
+<!--JADE T-->
+    {% if data['pr_JADE_tyr'] !=  data['Temple of the Jade Serpent Tyrannical'] and data['pr_JADE_tyr'] %}
 
-    {{ data['Return to Karazhan: Upper Tyrannical']}} ( {{data['pr_UPPR_tyr']}}
+    {{ data['Temple of the Jade Serpent Tyrannical']}} ( {{data['pr_JADE_tyr']}}
 
     {% else %}
-    {{ data['Return to Karazhan: Upper Tyrannical'] }}
+    {{ data['Temple of the Jade Serpent Tyrannical'] }}
 
     {% endif %}</td>
 
-<!--Gambit F-->
-    <td>{% if data['pr_GMBT_for'] !=  data['Tazavesh: So\'leah\'s Gambit Fortified'] and data['pr_GMBT_for']%}
+<!--AZURE F-->
+    <td>{% if data['pr_AV_for'] !=  data['The Azure Vault Fortified'] and data['pr_AV_for']%}
 
-    {{ data['Tazavesh: So\'leah\'s Gambit Fortified'] }} ( {{data['pr_GMBT_for']}}  )
+    {{ data['The Azure Vault Fortified'] }} ( {{data['pr_AV_for']}}  )
 
     {% else %}
-      {{ data['Tazavesh: So\'leah\'s Gambit Fortified'] }}
+      {{ data['The Azure Vault Fortified'] }}
     {% endif %}
     <br>
 
-<!--gambit T-->
-    {% if data['pr_GMBT_tyr'] !=  data['Tazavesh: So\'leah\'s Gambit Tyrannical'] and data['pr_GMBT_tyr']%}
+<!--AZURE T-->
+    {% if data['pr_AV_tyr'] !=  data['The Azure Vault Tyrannical'] and data['pr_AV_tyr']%}
 
-    {{ data['Tazavesh: So\'leah\'s Gambit Tyrannical'] }} ( {{data['pr_GMBT_tyr']}}  )
+    {{ data['The Azure Vault Tyrannical'] }} ( {{data['pr_AV_tyr']}}  )
 
     {% else %}
-      {{ data['Tazavesh: So\'leah\'s Gambit Tyrannical'] }}
+      {{ data['The Azure Vault Tyrannical'] }}
     {% endif %}</td>
 
-<!--street F-->
-    <td>{% if data['pr_STRT_for'] !=  data['Tazavesh: Streets of Wonder Fortified'] and data['pr_STRT_for'] %}
+<!--NOKH F-->
+    <td>{% if data['pr_NOKH_for'] !=  data['The Nokhud Offensive Fortified'] and data['pr_NOKH_for'] %}
 
-    {{ data['Tazavesh: Streets of Wonder Fortified']}} ( {{data['pr_STRT_for']}}  )
+    {{ data['The Nokhud Offensive Fortified']}} ( {{data['pr_NOKH_for']}}  )
 
     {% else %}
 
-    {{ data['Tazavesh: Streets of Wonder Fortified'] }}
+    {{ data['The Nokhud Offensive Fortified'] }}
 
     {% endif %}
     <br>
 
-<!--street T-->
-    {% if data['pr_STRT_tyr'] !=  data['Tazavesh: Streets of Wonder Tyrannical'] and data['pr_STRT_tyr'] %}
+<!--NOKH T-->
+    {% if data['pr_NOKH_tyr'] !=  data['The Nokhud Offensive Tyrannical'] and data['pr_NOKH_tyr'] %}
 
-    {{ data['Tazavesh: Streets of Wonder Tyrannical']}} ( {{data['pr_STRT_tyr']}}
+    {{ data['The Nokhud Offensive Tyrannical']}} ( {{data['pr_NOKH_tyr']}}
 
     {% else %}
-    {{ data['Tazavesh: Streets of Wonder Tyrannical'] }}
+    {{ data['The Nokhud Offensive Tyrannical'] }}
     {% endif %}</td>
     <td>{{ data['total_rating'] }}</td>
 

@@ -136,15 +136,21 @@ for char in character_json:
     conn.commit()
     print('{} being pulled'.format(char['name']))
     r = requests.get('https://raider.io/api/v1/characters/profile?region={}&realm={}&name={}&fields=mythic_plus_best_runs%2Cmythic_plus_highest_level_runs%2Cmythic_plus_alternate_runs%2Cgear%2Cmythic_plus_weekly_highest_level_runs%2Cmythic_plus_previous_weekly_highest_level_runs'.format(char['region'],char['server'],char['name']))
+    print("Raider IO status code - {}".format(r.status_code))
     r_bliz_equip = requests.get('https://us.api.blizzard.com/profile/wow/character/{0}/{1}/equipment?namespace=profile-us&locale=en_US&access_token={2}'.format(char['server'].lower(),char['name'].lower(),bliz_token))
+    print("Bliz equip status code = {}".format(r_bliz_equip.status_code))
     r_bliz_profile = requests.get('https://us.api.blizzard.com/profile/wow/character/{0}/{1}?namespace=profile-us&locale=en_US&access_token={2}'.format(char['server'].lower(),char['name'].lower(),bliz_token))
+    print('bliz profile status code - {}'.format(r_bliz_profile.status_code))
     if r_bliz_profile.status_code== 200:
         j_profile = json.loads(r_bliz_profile.text)
         active_spec_name = j_profile['active_spec']['name']
+        character_class = j_profile['character_class']['name']
+        active_spec = j_profile['active_spec']['name']
     else:
         print('could not pull player profile')
     affixes=[]
     if r.status_code == 200:
+        
         print('{} api pulled'.format(char['name']))
         j = json.loads(r.text)
         for dungeon in j['mythic_plus_alternate_runs']:
@@ -165,119 +171,143 @@ for char in character_json:
         #insert into mythic_plus_best_runs
         total_rating =sum([dungeon['rating'] for dungeon in all_best_runs])
         #print('best runs')
+        
         for dungeon in all_best_runs:
-            #print(dungeon['name'])
-            conn.execute(
-                      """INSERT OR INTO mythic_plus_best_runs (
-                        name
-                        ,region
-                        ,realm
-                        ,dungeon
-                        ,short_name
-                        ,mythic_level
-                        ,completed_at
-                        ,clear_time_ms
-                        ,num_keystone_upgrades
-                        ,map_challenge_mode_id
-                        ,zone_id
-                        ,score
-                        ,affixes
-                        ,URL
-                        ,unique_key
-                        ,tyr_or_fort
-                        ,type
-                        ,rating
-                        ,active_spec_name
-                        ,active_spec_role
-                        ,class
-                        )
-                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                       (j['name']
-                        ,j['region']
-                        ,j['realm']
-                        ,dungeon['dungeon']
-                        ,dungeon['short_name']
-                        ,dungeon['mythic_level']
-                        ,dungeon['completed_at']
-                        ,dungeon['clear_time_ms']
-                        ,dungeon['num_keystone_upgrades']
-                        ,dungeon['map_challenge_mode_id']
-                        ,dungeon['zone_id']
-                        ,dungeon['score']
-                        ,str(dungeon['affix_names'])
-                        ,dungeon['url']
-                        ,j['name']  + j['region']  + j['realm'] + '-' + dungeon['dungeon'] + dungeon['type']
-                        ,dungeon['affixes'][0]['name']
-                        ,dungeon['type']
-                        ,dungeon['rating']
-                        ,active_spec_name
-                        ,j['active_spec_role']
-                        ,j['class']
+            try:
+                #print(dungeon['name'])
+                conn.execute(
+                        """INSERT INTO mythic_plus_best_runs (
+                            name
+                            ,region
+                            ,realm
+                            ,dungeon
+                            ,short_name
+                            ,mythic_level
+                            ,completed_at
+                            ,clear_time_ms
+                            ,num_keystone_upgrades
+                            ,map_challenge_mode_id
+                            ,zone_id
+                            ,score
+                            ,affixes
+                            ,URL
+                            ,unique_key
+                            ,tyr_or_fort
+                            ,type
+                            ,rating
+                            ,active_spec_name
+                            ,active_spec_role
+                            ,class
                             )
-             )
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        (j['name']
+                            ,j['region']
+                            ,j['realm']
+                            ,dungeon['dungeon']
+                            ,dungeon['short_name']
+                            ,dungeon['mythic_level']
+                            ,dungeon['completed_at']
+                            ,dungeon['clear_time_ms']
+                            ,dungeon['num_keystone_upgrades']
+                            ,dungeon['map_challenge_mode_id']
+                            ,dungeon['zone_id']
+                            ,dungeon['score']
+                            ,str(dungeon['affix_names'])
+                            ,dungeon['url']
+                            ,j['name']  + j['region']  + j['realm'] + '-' + dungeon['dungeon'] + dungeon['type']
+                            ,dungeon['affixes'][0]['name']
+                            ,dungeon['type']
+                            ,dungeon['rating']
+                            ,active_spec_name
+                            ,j['active_spec_role']
+                            ,j['class']
+                                )
+                )
+            except Exception as e:
+                print(e)
+                print('could not insert into mythic_plus_best_runs')
             #print(dungeon['name'])
             conn.commit()
             #print('new stuff')
+            try:
+                print(dungeon['dungeon'])
+                print('{0} {1}'.format(dungeon['dungeon']
+                                        ,dungeon['affixes'][0]['name']))
+                num_keystone_upgrade_asterisk = np.where (dungeon['num_keystone_upgrades']==3,'***'
+                                            , np.where (dungeon['num_keystone_upgrades']==2,'**'
+                                                        , np.where (dungeon['num_keystone_upgrades']==1,'*','')))
 
-            conn.execute("""update season_best_pivot_df_s1
-            set "{0} {1}" =  {2}
-            ,total_rating = {3}
-            where name = "{4}"
-            and scoreboard_date = "{5}" """.format(dungeon['name']
-                                    ,dungeon['affixes'][0]['name']
-                                    ,dungeon['score']
-                                    ,total_rating,j['name']
-                                    ,now_string))
-            #print('new complete')
-            conn.commit()
+                level_and_upgrade= str(dungeon['mythic_level']) +' '+ str(num_keystone_upgrade_asterisk)
+                update_sql = """update season_best_pivot_df_s1
+                set "{0} {1}" =  "{2}"
+                ,total_rating = {3}
+                where name = "{4}"
+                and scoreboard_date = "{5}" """.format(dungeon['dungeon']
+                                        ,dungeon['affixes'][0]['name']
+                                        ,level_and_upgrade
+                                        ,total_rating
+                                        ,j['name']
+                                        ,now_string)
+                print(update_sql)
+                conn.execute(update_sql)
+                #print('new complete')
+                conn.commit()
+            except Exception as e:
+                print(e)
+                print('did not update season pivot')
         #print('all_mythic_dungeons')
         for dungeon in all_mythic_dungeons:
-            conn.execute(
-                      """INSERT OR IGNORE INTO all_mythic_plus_runs (
-                        name
-                        ,region
-                        ,realm
-                        ,dungeon
-                        ,short_name
-                        ,mythic_level
-                        ,completed_ at
-                        ,clear_time_ms
-                        ,num_keystone_upgrades
-                        ,map_challenge_mode_id
-                        ,zone_id
-                        ,score
-                        ,affixes
-                        ,URL
-                        ,unique_key
-                        ,tyr_or_fort
-                        ,active_spec_name
-                        ,active_spec_role
-                        ,class
-                         )
-                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                       (j['name']
-                        ,j['region']
-                        ,j['realm']
-                        ,dungeon['dungeon']
-                        ,dungeon['short_name']
-                        ,dungeon['mythic_level']
-                        ,dungeon['completed_at']
-                        ,dungeon['clear_time_ms']
-                        ,dungeon['num_keystone_upgrades']
-                        ,dungeon['map_challenge_mode_id']
-                        ,dungeon['zone_id']
-                        ,dungeon['score']
-                        ,str(dungeon['affix_names'])
-                        ,dungeon['url']
-                        ,j['name'] + '-' + j['region'] + '-' + j['realm'] + '-' + dungeon['completed_at']
-                        ,dungeon['affixes'][0]['name']
-                        ,active_spec_name
-                        ,j['active_spec_role']
-                        ,j['class']
-
+            try:
+                conn.execute(
+                        """INSERT OR IGNORE INTO all_mythic_plus_runs (
+                            name
+                            ,region
+                            ,realm
+                            ,dungeon
+                            ,short_name
+                            ,mythic_level
+                            ,completed_at
+                            ,clear_time_ms
+                            ,num_keystone_upgrades
+                            ,map_challenge_mode_id
+                            ,zone_id
+                            ,score
+                            ,affixes
+                            ,URL
+                            ,unique_key
+                            ,tyr_or_fort
+                            ,active_spec_name
+                            ,active_spec_role
+                            ,class
                             )
-                    )
-            conn.commit()
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        (j['name']
+                            ,j['region']
+                            ,j['realm']
+                            ,dungeon['dungeon']
+                            ,dungeon['short_name']
+                            ,dungeon['mythic_level']
+                            ,dungeon['completed_at']
+                            ,dungeon['clear_time_ms']
+                            ,dungeon['num_keystone_upgrades']
+                            ,dungeon['map_challenge_mode_id']
+                            ,dungeon['zone_id']
+                            ,dungeon['score']
+                            ,str(dungeon['affix_names'])
+                            ,dungeon['url']
+                            ,j['name'] + '-' + j['region'] + '-' + j['realm'] + '-' + dungeon['completed_at']
+                            ,dungeon['affixes'][0]['name']
+                            ,active_spec_name
+                            ,j['active_spec_role']
+                            ,j['class']
+
+                                )
+                        )
+                conn.commit()
+            except Exception as e:
+                print(e)
+                print('could not update all mythic plus runs')
+            
     else:
         print('raider io did not work {}'.format(char['name']))
     if r_bliz_equip.status_code == 200:
@@ -311,39 +341,43 @@ for char in character_json:
             derived_item_level = 0
         #print('gear')
         for item in j_equip['equipped_items']:
-            conn.execute(
-                    """INSERT OR REPLACE INTO character_gear (
-                        name
-                        ,region
-                        ,realm
-                        ,last_crawled_at
-                        ,equipped_item_level
-                        ,item_slot
-                        ,item_level
-                        ,item_name
-                        ,unique_key
-                        ,active_spec_name
-                        ,active_spec_role
-                        ,derived_item_level
-                        ,class
-                     )
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                    (char['name']
-                    ,char['region']
-                    ,char['server']
-                    ,now__time_string
-                    ,math.floor(derived_item_level)
-                     ,item['slot']['name'].lower().replace(" ", "")
-                     ,item['level']['value']
-                     ,item['name']
-                     ,char['name']+char['server']+char['region']+item['slot']['name'].lower().replace(" ", "")+str(derived_item_level)
-                    ,active_spec_name
-                        ,j['active_spec_role']
-                        ,derived_item_level
-                     ,j['class']
+            try:
+                conn.execute(
+                        """INSERT OR REPLACE INTO character_gear (
+                            name
+                            ,region
+                            ,realm
+                            ,last_crawled_at
+                            ,equipped_item_level
+                            ,item_slot
+                            ,item_level
+                            ,item_name
+                            ,unique_key
+                            ,active_spec_name
+                            ,active_spec_role
+                            ,derived_item_level
+                            ,class
                         )
-                    )
-            conn.commit()
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        (char['name']
+                        ,char['region']
+                        ,char['server']
+                        ,now__time_string
+                        ,math.floor(derived_item_level)
+                        ,item['slot']['name'].lower().replace(" ", "")
+                        ,item['level']['value']
+                        ,item['name']
+                        ,char['name']+char['server']+char['region']+item['slot']['name'].lower().replace(" ", "")+str(derived_item_level)
+                        ,active_spec_name
+                            ,'NO ROLE'
+                            ,derived_item_level
+                        ,character_class
+                            )
+                        )
+                conn.commit()
+            except Exception as e:
+                print(e)
+                print('could not insert into character gear')
     else:
         print('blizzard api did not work {}'.format(char['name']))
     conn.close()
@@ -377,7 +411,7 @@ df_season_best['scoreboard_date'] =now_string
 
 conn.execute('delete from season_best_pivot where scoreboard_date = "{}"'.format(now_string))
 conn.commit()
-df_season_best.to_sql('season_best_pivot',conn,if_exists='append')
+#df_season_best.to_sql('season_best_pivot',conn,if_exists='append')
 conn.commit()
 #update the gear table with increases
 print("updating scoreboard changes")

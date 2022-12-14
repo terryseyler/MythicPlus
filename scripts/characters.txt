@@ -99,7 +99,7 @@
      ,"server":"Illidan"
      ,"region":"us"
     },
-     {
+    {
     "name":"Sulmok"
      ,"server":"Illidan"
      ,"region":"us"
@@ -164,4 +164,5 @@
      ,"server":"Illidan"
      ,"region":"us"
     }
+  
 ]
