@@ -150,7 +150,7 @@ for char in character_json:
         print('could not pull player profile')
     affixes=[]
     if r.status_code == 200:
-        
+
         print('{} api pulled'.format(char['name']))
         j = json.loads(r.text)
         for dungeon in j['mythic_plus_alternate_runs']:
@@ -171,7 +171,7 @@ for char in character_json:
         #insert into mythic_plus_best_runs
         total_rating =sum([dungeon['rating'] for dungeon in all_best_runs])
         #print('best runs')
-        
+
         for dungeon in all_best_runs:
             try:
                 #print(dungeon['name'])
@@ -307,7 +307,7 @@ for char in character_json:
             except Exception as e:
                 print(e)
                 print('could not update all mythic plus runs')
-            
+
     else:
         print('raider io did not work {}'.format(char['name']))
     if r_bliz_equip.status_code == 200:
