@@ -196,12 +196,12 @@
     {% else %}
     {{ data['The Nokhud Offensive Tyrannical'] }}
     {% endif %}</td>
-    <td>{{ data['total_rating'] }}</td>
+    <td>{{ data['total_rating_round'] }}</td>
 
-   {% if data['daily_rating_change'] > 0 %}
-     <td>&uarr; {{ data['daily_rating_change'] }}</td>
-   {% elif data['daily_rating_change']  < 0 %}
-     <td>&darr;{{ data['daily_rating_change'] }}</td>
+   {% if data['daily_rating_change_round'] > 0 %}
+     <td>&uarr; {{ data['daily_rating_change_round'] }}</td>
+   {% elif data['daily_rating_change_round']  < 0 %}
+     <td>&darr;{{ data['daily_rating_change_round'] }}</td>
    {% else %}
      <td>&harr;</td>
    {% endif %}

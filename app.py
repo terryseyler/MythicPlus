@@ -49,16 +49,19 @@ def index():
     cursor  = conn.cursor()
     data = cursor.execute("""select scoreboard.*
     ,char.derived_item_level
-     from 
+     from
     (
-        select * from base_characters base left join season_best_pivot_ext piv
+        select *
+        ,round(total_rating,1) as total_rating_round
+        ,round(daily_rating_change,1) as daily_rating_change_round
+        from base_characters base left join season_best_pivot_ext piv
     on upper(base.name) = upper(piv.name)
     and upper(base.realm) = upper(piv.realm)
     and upper(base.region) = upper(piv.region)
     where scoreboard_date = (select max(scoreboard_date) from  season_best_pivot_ext)
     order by total_rating desc
     ) scoreboard
-    left join 
+    left join
     (
         Select Name,realm,region,round(avg(derived_item_level),1) as derived_item_level
         from character_gear_ext
