@@ -12,11 +12,19 @@ table.scoreboard {
   border: 1px solid #ddd;
 }
 .scoreboard tr td, .scoreboard thead th {
-  text-align: center;
-  width: 8%
+  text-align: left;
+  width: 7%
 }
 .scoreboard tr td:nth-child(1){
   text-align: left;
+  width: 12%;
+}
+.scoreboard tr td:last-child, .scoreboard thead th:last-child {
+  text-align: center;
+  width: 12%;
+}
+.scoreboard tr td:nth-child(11), .scoreboard thead th:nth-child(11) {
+  text-align: center;
   width: 12%;
 }
 table.character {
