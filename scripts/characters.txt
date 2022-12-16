@@ -5,6 +5,16 @@
      ,"region":"us"
     },
     {
+    "name":"Akavyn"
+     ,"server":"Stormscale"
+     ,"region":"us"
+    },
+    {
+    "name":"Ceszty"
+     ,"server":"Stormscale"
+     ,"region":"us"
+    },
+    {
     "name":"Umbrahiem"
      ,"server":"Illidan"
      ,"region":"us"
