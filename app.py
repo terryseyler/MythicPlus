@@ -201,6 +201,7 @@ def character_name(region,realm,character_name):
                                     where name = '{}'
                                         and realm = '{}'
                                         and region = '{}'
+                                    and strftime('%Y-%m-%d %H:%M',completed_at) >= '2022-12-01 00:00'
                                     order by completed_at desc
                                         """.format(character_name,realm,region)).fetchall()
 
