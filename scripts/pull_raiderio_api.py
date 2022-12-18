@@ -99,7 +99,7 @@ character_json = json.loads(data)
 now_string = dt.datetime.now().strftime("%Y-%m-%d")
 now__time_string = dt.datetime.now().strftime("%m-%d-%Y %H:%M")
 conn.execute('delete from base_characters')
-conn.execute('delete from season_best_pivot_df_s1')
+conn.execute('delete from season_best_pivot_df_s1 where scoreboard_date = {}'.format(now_string))
 conn.commit()
 conn.close()
 for char in character_json:
