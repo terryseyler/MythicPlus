@@ -42,7 +42,11 @@
     </thead>
     <tr>
     {% for encounter in warcraftlogs_encounters %}
-      <td>{{encounter['bestSpec']}} - {{ encounter['rankPercent_rounded'] }}</td>
+      {% if encounter['rankPercent'] %}
+      <td>{{ encounter['bestSpec'] }} - {{ encounter['rankPercent_rounded'] }}</td>
+      {% else %}
+      <td>No Ranking</td>
+      {% endif %}
     {% endfor %}
     </tr>
   
