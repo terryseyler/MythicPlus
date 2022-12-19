@@ -5,6 +5,16 @@ th, td {
   padding: 0px;
   font-size: 13px;
 }
+table.parse {
+  
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+.parse td,th{
+  text-align:center
+}
 table.scoreboard {
   border-collapse: collapse;
   border-spacing: 0;

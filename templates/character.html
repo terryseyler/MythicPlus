@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <html>
 <p><a href="{{url_for('index')}}">home</a></p>
-
+<!--
 <div class="form">
 <span>
 <form method="POST">
@@ -13,7 +13,7 @@
   <option value="Mail">Mail</option>
   <option value="Plate">Plate</option>
 </select>
-<!--
+
 <label for="Haste">Haste</label>
 <input type="checkbox" id="Crit" name="Crit" value="Crit">
 <label for="Crit">Crit</label>
@@ -21,13 +21,33 @@
 <label for="Vers">Vers</label>
 <input type="checkbox" id="Mastery" name="Mastery" value="Mastery">
 <label for="Mastery">Mastery</label>
--->
+
 <input class="btn" type="submit" name="submit_button" value="Find Upgrades">
 </form>
 </span>
 </div>
+-->
 <h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }} - {{ character['active_spec_name'] }} - {{character['class']}}</h3>
-
+<div>
+  <table class="parse">
+    <thead>
+      <th>Eranog</th>
+      <th>Terros</th>
+      <th>The Primal Council</th>
+      <th>Sennarth</th>
+      <th>Dathea</th>
+      <th>Kurog</th>
+      <th>Diurna</th>
+      <th>Raszageth</th>
+    </thead>
+    <tr>
+    {% for encounter in warcraftlogs_encounters %}
+      <td>{{encounter['bestSpec']}} - {{ encounter['rankPercent_rounded'] }}</td>
+    {% endfor %}
+    </tr>
+  
+  </table>
+</div>
 <div class="row">
 <div class ="column">
 {% for date in distinct_crawl_dates %}
