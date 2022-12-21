@@ -151,7 +151,7 @@ for char in character_json:
     query {{
         characterData {{
             character(name:"{0}", serverSlug: "{1}", serverRegion: "{2}") {{
-                zoneRankings(byBracket: true)
+                zoneRankings(byBracket: true, timeframe: Historical)
                     }}
                 }}
             }}

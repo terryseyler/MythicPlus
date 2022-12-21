@@ -171,6 +171,13 @@ def character_name(region,realm,character_name):
 
     conn = create_connection()
     cursor = conn.cursor()
+    warcraftlogs_raid = cursor.execute("""
+                                        select *
+                                        ,round(bestPerformanceAverage,1) as bestPerformanceAverage_round
+                                          from warcraftlogs_raid 
+                                        where character_name ='{}'
+                                        and realm = '{}'
+                                        and region = '{}' """.format(character_name,realm,region)).fetchone()
     warcraftlogs_encounters = cursor.execute("""select * 
                                         ,round(rankPercent,1) as rankPercent_rounded
                                         from warcraftlogs_raid_encounter
@@ -219,4 +226,4 @@ def character_name(region,realm,character_name):
                             and item_slot not in ('tabard','shirt')
                             order by last_crawled_at desc
                                 """.format(character_name,realm,region)).fetchone()
-    return render_template('character.html',warcraftlogs_encounters=warcraftlogs_encounters,data=data,character=character,distinct_crawl_dates=distinct_crawl_dates,all_mythic_plus_runs=all_mythic_plus_runs)
+    return render_template('character.html',warcraftlogs_raid=warcraftlogs_raid,warcraftlogs_encounters=warcraftlogs_encounters,data=data,character=character,distinct_crawl_dates=distinct_crawl_dates,all_mythic_plus_runs=all_mythic_plus_runs)
