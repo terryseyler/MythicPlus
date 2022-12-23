@@ -147,189 +147,199 @@ for char in character_json:
     print("Bliz equip status code = {}".format(r_bliz_equip.status_code))
     r_bliz_profile = requests.get('https://us.api.blizzard.com/profile/wow/character/{0}/{1}?namespace=profile-us&locale=en_US&access_token={2}'.format(char['server'].lower(),char['name'].lower(),bliz_token))
     print('bliz profile status code - {}'.format(r_bliz_profile.status_code))
-    query = """
-    query {{
-        characterData {{
-            character(name:"{0}", serverSlug: "{1}", serverRegion: "{2}") {{
-                zoneRankings(byBracket: true, timeframe: Historical, difficulty:3)
+    warcraftlogs_difficulty_list = [3,4]
+    for d in warcraftlogs_difficulty_list:
+
+        query = """
+        query {{
+            characterData {{
+                character(name:"{0}", serverSlug: "{1}", serverRegion: "{2}") {{
+                    zoneRankings(byBracket: true, timeframe: Historical, difficulty:{3})
+                        }}
                     }}
                 }}
-            }}
 
-    """.format(char['name'],char['server'],char['region'])
+        """.format(char['name'],char['server'],char['region'],d)
 
-    r_warcraft_logs = requests.get('https://www.warcraftlogs.com/api/v2/client', json={'query': query},headers={
-        'Authorization': 'Bearer ' + warcraftlogs_token
-        ,'content-type':'application/json'
-    })
-    print('warcraft logs status code - {}'.format(r_warcraft_logs.status_code))
+        r_warcraft_logs = requests.get('https://www.warcraftlogs.com/api/v2/client', json={'query': query},headers={
+            'Authorization': 'Bearer ' + warcraftlogs_token
+            ,'content-type':'application/json'
+        })
+        print('warcraft logs diff:{} status code - {}'.format(d,r_warcraft_logs.status_code))
 
-    if r_warcraft_logs.status_code==200:
-        j_warcraft_logs = json.loads(r_warcraft_logs.text)
-        try:
-            zoneRankings= j_warcraft_logs['data']['characterData']['character']['zoneRankings']
-            zoneRankings_Allstar = j_warcraft_logs['data']['characterData']['character']['zoneRankings']['allStars']
-            encounterRankings =j_warcraft_logs['data']['characterData']['character']['zoneRankings']['rankings']
-        except:
-            print('could not parse warcraft logs api')
-        try:
-            for enc in encounterRankings:
-                #print(enc['allStars'])
-                if enc['allStars'] == None:
+        if r_warcraft_logs.status_code==200:
+            j_warcraft_logs = json.loads(r_warcraft_logs.text)
+            try:
+                zoneRankings= j_warcraft_logs['data']['characterData']['character']['zoneRankings']
+                zoneRankings_Allstar = j_warcraft_logs['data']['characterData']['character']['zoneRankings']['allStars']
+                encounterRankings =j_warcraft_logs['data']['characterData']['character']['zoneRankings']['rankings']
+            except:
+                print('could not parse warcraft logs api')
+            try:
+                for enc in encounterRankings:
+                    #print(enc['allStars'])
+                    if enc['allStars'] == None:
 
-                    enc_allstar_points = 0
-                    enc_allstar_possible_points=0
-                    enc_allstar_partition=0
-                    enc_allstar_rank=0
-                    enc_allstar_region_rank=0
-                    enc_allstar_server_rank=0
-                    enc_allstar_rank_percent=0
-                    enc_allstar_total=0
-                    spec='none'
-                    bestspec='none'
-                else:
-                    enc_allstar_points = enc['allStars']['points']
-                    enc_allstar_possible_points=enc['allStars']['possiblePoints']
-                    enc_allstar_partition=enc['allStars']['partition']
-                    enc_allstar_rank=enc['allStars']['rank']
-                    enc_allstar_region_rank=enc['allStars']['regionRank']
-                    enc_allstar_server_rank=enc['allStars']['serverRank']
-                    enc_allstar_rank_percent=enc['allStars']['rankPercent']
-                    enc_allstar_total=enc['allStars']['total']
-                    spec=enc['spec']
-                    bestspec=enc['bestSpec']
+                        enc_allstar_points = 0
+                        enc_allstar_possible_points=0
+                        enc_allstar_partition=0
+                        enc_allstar_rank=0
+                        enc_allstar_region_rank=0
+                        enc_allstar_server_rank=0
+                        enc_allstar_rank_percent=0
+                        enc_allstar_total=0
+                        spec='none'
+                        bestspec='none'
+                    else:
+                        enc_allstar_points = enc['allStars']['points']
+                        enc_allstar_possible_points=enc['allStars']['possiblePoints']
+                        enc_allstar_partition=enc['allStars']['partition']
+                        enc_allstar_rank=enc['allStars']['rank']
+                        enc_allstar_region_rank=enc['allStars']['regionRank']
+                        enc_allstar_server_rank=enc['allStars']['serverRank']
+                        enc_allstar_rank_percent=enc['allStars']['rankPercent']
+                        enc_allstar_total=enc['allStars']['total']
+                        spec=enc['spec']
+                        bestspec=enc['bestSpec']
 
-                conn.execute("""insert or replace into warcraftlogs_raid_encounter
-                        (
-                        character_name
-                        ,realm
-                        ,region
-
-                        ,zone
-                        ,partition
-
-                        ,encounter_id
-                        ,encounter_name
-                        ,rankPercent
-                        ,medianPercent
-                        ,lockedIn
-                        ,totalKills
-                        ,fastestKill
-                        ,allstars_points
-                        ,allstars_possiblePoints
-                        ,allstars_partition
-                        ,allstars_rank
-                        ,allstars_region_rank
-                        ,allstars_server_rank
-                        ,allstars_rank_percent
-                        ,allstars_total
-                        ,spec
-                        ,bestSpec
-                        ,bestAmount
-                        ,unique_key
-
-
-                        )values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                        """,
-                            (char['name']
-                            ,char['server']
-                            ,char['region']
-                            ,zoneRankings['zone']
-                            ,zoneRankings['partition']
-                            ,enc['encounter']['id']
-                            ,enc['encounter']['name']
-                            ,enc['rankPercent']
-                            ,enc['medianPercent']
-                            ,enc['lockedIn']
-                            ,enc['totalKills']
-                            ,enc['fastestKill']
-                                ,enc_allstar_points
-                                ,enc_allstar_possible_points
-                                ,enc_allstar_partition
-                                ,enc_allstar_rank
-                                ,enc_allstar_region_rank
-                                ,enc_allstar_server_rank
-                                ,enc_allstar_rank_percent
-                                ,enc_allstar_total
-                            ,spec
-                            ,bestspec
-                            ,enc['bestAmount']
-                            ,char['name'] + char['server'] + char['region']  + str(enc['encounter']['id'])
-                                    ))
-            conn.commit()
-        except:
-            print('could not insert into warcraftlogs_raid_encounter')
-        try:
-            for rank in zoneRankings_Allstar:
-                conn.execute("""insert or replace into warcraftlogs_raid_allstars
-                                (
+                    conn.execute("""insert or replace into warcraftlogs_raid_encounter
+                            (
                             character_name
                             ,realm
                             ,region
 
                             ,zone
-
                             ,partition
-                            ,spec
-                            ,points
-                            ,possiblePoints
-                            ,rank
-                            ,regionRank
-                            ,serverRank
+
+                            ,encounter_id
+                            ,encounter_name
                             ,rankPercent
-                            ,total
+                            ,medianPercent
+                            ,lockedIn
+                            ,totalKills
+                            ,fastestKill
+                            ,allstars_points
+                            ,allstars_possiblePoints
+                            ,allstars_partition
+                            ,allstars_rank
+                            ,allstars_region_rank
+                            ,allstars_server_rank
+                            ,allstars_rank_percent
+                            ,allstars_total
+                            ,spec
+                            ,bestSpec
+                            ,bestAmount
+                            ,unique_key
+                            ,difficulty
+
+                            )values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                            """,
+                                (char['name']
+                                ,char['server']
+                                ,char['region']
+                                ,zoneRankings['zone']
+                                ,zoneRankings['partition']
+                                ,enc['encounter']['id']
+                                ,enc['encounter']['name']
+                                ,enc['rankPercent']
+                                ,enc['medianPercent']
+                                ,enc['lockedIn']
+                                ,enc['totalKills']
+                                ,enc['fastestKill']
+                                    ,enc_allstar_points
+                                    ,enc_allstar_possible_points
+                                    ,enc_allstar_partition
+                                    ,enc_allstar_rank
+                                    ,enc_allstar_region_rank
+                                    ,enc_allstar_server_rank
+                                    ,enc_allstar_rank_percent
+                                    ,enc_allstar_total
+                                ,spec
+                                ,bestspec
+                                ,enc['bestAmount']
+                                ,char['name'] + char['server'] + char['region']  + str(enc['encounter']['id']) + str(zoneRankings['difficulty'])
+                                ,str(zoneRankings['difficulty'])
+                                )
+                             )
+                conn.commit()
+            except Exception as e:
+                print(e)
+                print('could not insert into warcraftlogs_raid_encounter')
+            try:
+                for rank in zoneRankings_Allstar:
+                    conn.execute("""insert or replace into warcraftlogs_raid_allstars
+                                    (
+                                character_name
+                                ,realm
+                                ,region
+
+                                ,zone
+
+                                ,partition
+                                ,spec
+                                ,points
+                                ,possiblePoints
+                                ,rank
+                                ,regionRank
+                                ,serverRank
+                                ,rankPercent
+                                ,total
+                                ,unique_key
+                                ,difficulty
+                                )VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                                """,(
+                        char['name']
+                                ,char['server']
+                                ,char['region']
+                        ,zoneRankings['zone']
+                        ,rank['partition']
+                            ,rank['spec']
+                            ,rank['points']
+                            ,rank['possiblePoints']
+                            ,rank['rank']
+                            ,rank['regionRank']
+                            ,rank['serverRank']
+                            ,rank['rankPercent']
+                            ,rank['total']
+                            ,char['name'] + char['server'] + char['region']  + rank['spec'] + str(rank['partition']) + str(zoneRankings['zone']) +str(zoneRankings['difficulty'])
+                            ,str(zoneRankings['difficulty'])
+                        )
+                    )
+                conn.commit()
+            except Exception as e:
+                print(e)
+                print('could not insert into warcraftlogs_raid_allstars')
+            try:
+                conn.execute("""insert or replace into warcraftlogs_raid
+                        (
+                        character_name
+                            ,realm
+                            ,region
+                            ,bestPerformanceAverage
+                            ,medianPerformanceAverage
+                            ,difficulty
+                            ,metric
+                            ,partition
+                            ,zone
                             ,unique_key
 
-                            )VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                            """,(
-                    char['name']
-                            ,char['server']
-                            ,char['region']
+                        )VALUES(?,?,?,?,?,?,?,?,?,?)
+                        """,(
+                char['name']
+                                ,char['server']
+                                ,char['region']
+                ,zoneRankings['bestPerformanceAverage']
+                    ,zoneRankings['medianPerformanceAverage']
+                    ,zoneRankings['difficulty']
+                    ,zoneRankings['metric']
+                    ,zoneRankings['partition']
                     ,zoneRankings['zone']
-                    ,rank['partition']
-                        ,rank['spec']
-                        ,rank['points']
-                        ,rank['possiblePoints']
-                        ,rank['rank']
-                        ,rank['regionRank']
-                        ,rank['serverRank']
-                        ,rank['rankPercent']
-                        ,rank['total']
-                        ,char['name'] + char['server'] + char['region']  + rank['spec'] + str(rank['partition']) + str(zoneRankings['zone'])
-                    ))
-            conn.commit()
-        except:
-            print('could not insert into warcraftlogs_raid_allstars')
-        try:
-            conn.execute("""insert or replace into warcraftlogs_raid
-                    (
-                    character_name
-                        ,realm
-                        ,region
-                        ,bestPerformanceAverage
-                        ,medianPerformanceAverage
-                        ,difficulty
-                        ,metric
-                        ,partition
-                        ,zone
-                        ,unique_key
-
-                    )VALUES(?,?,?,?,?,?,?,?,?,?)
-                    """,(
-            char['name']
-                            ,char['server']
-                            ,char['region']
-            ,zoneRankings['bestPerformanceAverage']
-                ,zoneRankings['medianPerformanceAverage']
-                ,zoneRankings['difficulty']
-                ,zoneRankings['metric']
-                ,zoneRankings['partition']
-                ,zoneRankings['zone']
-                ,char['name'] + char['server'] + char['region'] + str(zoneRankings['partition']) + str(zoneRankings['zone'])
-            ))
-            conn.commit()
-        except:
-            print('could not insert into warcraftlogs_raid')
+                    ,char['name'] + char['server'] + char['region'] + str(zoneRankings['partition']) + str(zoneRankings['zone']) + str(zoneRankings['difficulty'])
+                ))
+                conn.commit()
+            except Exception as e:
+                print(e)
+                print('could not insert into warcraftlogs_raid')
 
     if r_bliz_profile.status_code== 200:
         j_profile = json.loads(r_bliz_profile.text)
@@ -408,7 +418,7 @@ for char in character_json:
                             ,dungeon['affixes'][0]['name']
                             ,dungeon['type']
                             ,dungeon['rating']
-                            ,active_spec_name
+                            ,j['active_spec_name']
                             ,j['active_spec_role']
                             ,j['class']
                                 )
@@ -487,7 +497,7 @@ for char in character_json:
                             ,dungeon['url']
                             ,j['name'] + '-' + j['region'] + '-' + j['realm'] + '-' + dungeon['completed_at']
                             ,dungeon['affixes'][0]['name']
-                            ,active_spec_name
+                            ,j['active_spec_name']
                             ,j['active_spec_role']
                             ,j['class']
 

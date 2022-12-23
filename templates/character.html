@@ -29,9 +29,10 @@
 -->
 <h3>{{ character['name'] }} - {{ character['realm'] }}- {{ character['equipped_item_level'] }} - {{ character['active_spec_name'] }} - {{character['class']}}</h3>
 <div>
-<p>Average best performance for Normal Vault - {{ warcraftlogs_raid['bestPerformanceAverage_round']}}</p>
+<p>Average best performance for Normal - {{ warcraftlogs_raid['bestPerformanceAverage_round']}}, Heroic - {{ warcraftlogs_raid_heroic['bestPerformanceAverage_round']}}</p>
   <table class="parse">
     <thead>
+      <th>Difficulty</th>
       <th>Eranog</th>
       <th>Terros</th>
       <th>The Primal Council</th>
@@ -42,6 +43,7 @@
       <th>Raszageth</th>
     </thead>
     <tr>
+    <td>Normal</td>
     {% for encounter in warcraftlogs_encounters %}
       {% if encounter['rankPercent'] %}
       <td>{{ encounter['bestSpec'] }} - {{ encounter['rankPercent_rounded'] }}</td>
@@ -50,7 +52,16 @@
       {% endif %}
     {% endfor %}
     </tr>
-
+    <tr>
+      <td>Heroic</td>
+      {% for encounter in warcraftlogs_encounters_heroic %}
+        {% if encounter['rankPercent'] %}
+        <td>{{ encounter['bestSpec'] }} - {{ encounter['rankPercent_rounded'] }}</td>
+        {% else %}
+        <td>No Ranking</td>
+        {% endif %}
+      {% endfor %}
+      </tr>
   </table>
 </div>
 <div class="row">

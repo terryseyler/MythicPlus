@@ -175,15 +175,35 @@ def character_name(region,realm,character_name):
                                         select *
                                         ,round(bestPerformanceAverage,1) as bestPerformanceAverage_round
                                           from warcraftlogs_raid 
-                                        where character_name ='{}'
+                                        where 
+                                        difficulty = 3
+                                        and character_name ='{}'
+                                        and realm = '{}'
+                                        and region = '{}' """.format(character_name,realm,region)).fetchone()
+    warcraftlogs_raid_heroic = cursor.execute("""
+                                        select *
+                                        ,round(bestPerformanceAverage,1) as bestPerformanceAverage_round
+                                          from warcraftlogs_raid 
+                                        where 
+                                        difficulty = 4
+                                        and character_name ='{}'
                                         and realm = '{}'
                                         and region = '{}' """.format(character_name,realm,region)).fetchone()
     warcraftlogs_encounters = cursor.execute("""select * 
                                         ,round(rankPercent,1) as rankPercent_rounded
                                         from warcraftlogs_raid_encounter
-                                        where character_name ='{}'
+                                        where difficulty = 3
+                                        and character_name ='{}'
                                         and realm = '{}'
                                         and region = '{}' """.format(character_name,realm,region)).fetchall()
+    warcraftlogs_encounters_heroic = cursor.execute("""select * 
+                                        ,round(rankPercent,1) as rankPercent_rounded
+                                        from warcraftlogs_raid_encounter
+                                        where difficulty = 4
+                                        and character_name ='{}'
+                                        and realm = '{}'
+                                        and region = '{}' """.format(character_name,realm,region)).fetchall()
+
     distinct_crawl_dates = cursor.execute("""select distinct active_spec_role
                                         ,active_spec_name
                                         ,last_crawled_at as last_crawled_cleansed
@@ -226,4 +246,4 @@ def character_name(region,realm,character_name):
                             and item_slot not in ('tabard','shirt')
                             order by last_crawled_at desc
                                 """.format(character_name,realm,region)).fetchone()
-    return render_template('character.html',warcraftlogs_raid=warcraftlogs_raid,warcraftlogs_encounters=warcraftlogs_encounters,data=data,character=character,distinct_crawl_dates=distinct_crawl_dates,all_mythic_plus_runs=all_mythic_plus_runs)
+    return render_template('character.html',warcraftlogs_encounters_heroic=warcraftlogs_encounters_heroic,warcraftlogs_raid_heroic=warcraftlogs_raid_heroic,warcraftlogs_raid=warcraftlogs_raid,warcraftlogs_encounters=warcraftlogs_encounters,data=data,character=character,distinct_crawl_dates=distinct_crawl_dates,all_mythic_plus_runs=all_mythic_plus_runs)
