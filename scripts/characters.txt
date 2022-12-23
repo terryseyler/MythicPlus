@@ -5,6 +5,11 @@
      ,"region":"us"
     },
     {
+    "name":"Vallestra"
+     ,"server":"Illidan"
+     ,"region":"us"
+    },
+    {
     "name":"Akavyn"
      ,"server":"Stormscale"
      ,"region":"us"
@@ -174,5 +179,5 @@
      ,"server":"Illidan"
      ,"region":"us"
     }
-  
+
 ]

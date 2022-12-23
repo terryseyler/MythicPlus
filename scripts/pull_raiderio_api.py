@@ -151,15 +151,15 @@ for char in character_json:
     query {{
         characterData {{
             character(name:"{0}", serverSlug: "{1}", serverRegion: "{2}") {{
-                zoneRankings(byBracket: true, timeframe: Historical)
+                zoneRankings(byBracket: true, timeframe: Historical, difficulty:3)
                     }}
                 }}
             }}
 
     """.format(char['name'],char['server'],char['region'])
-    
+
     r_warcraft_logs = requests.get('https://www.warcraftlogs.com/api/v2/client', json={'query': query},headers={
-        'Authorization': 'Bearer ' + warcraftlogs_token 
+        'Authorization': 'Bearer ' + warcraftlogs_token
         ,'content-type':'application/json'
     })
     print('warcraft logs status code - {}'.format(r_warcraft_logs.status_code))
@@ -176,7 +176,7 @@ for char in character_json:
             for enc in encounterRankings:
                 #print(enc['allStars'])
                 if enc['allStars'] == None:
-                    
+
                     enc_allstar_points = 0
                     enc_allstar_possible_points=0
                     enc_allstar_partition=0
@@ -198,37 +198,37 @@ for char in character_json:
                     enc_allstar_total=enc['allStars']['total']
                     spec=enc['spec']
                     bestspec=enc['bestSpec']
-                    
+
                 conn.execute("""insert or replace into warcraftlogs_raid_encounter
                         (
-                        character_name 
-                        ,realm 
-                        ,region 
-                        
-                        ,zone 
-                        ,partition 
-                        
-                        ,encounter_id 
-                        ,encounter_name 
-                        ,rankPercent 
-                        ,medianPercent 
-                        ,lockedIn 
-                        ,totalKills 
-                        ,fastestKill 
-                        ,allstars_points 
-                        ,allstars_possiblePoints 
-                        ,allstars_partition 
-                        ,allstars_rank 
-                        ,allstars_region_rank 
-                        ,allstars_server_rank 
-                        ,allstars_rank_percent 
-                        ,allstars_total 
-                        ,spec 
-                        ,bestSpec 
-                        ,bestAmount 
-                        ,unique_key 
-                        
-                        
+                        character_name
+                        ,realm
+                        ,region
+
+                        ,zone
+                        ,partition
+
+                        ,encounter_id
+                        ,encounter_name
+                        ,rankPercent
+                        ,medianPercent
+                        ,lockedIn
+                        ,totalKills
+                        ,fastestKill
+                        ,allstars_points
+                        ,allstars_possiblePoints
+                        ,allstars_partition
+                        ,allstars_rank
+                        ,allstars_region_rank
+                        ,allstars_server_rank
+                        ,allstars_rank_percent
+                        ,allstars_total
+                        ,spec
+                        ,bestSpec
+                        ,bestAmount
+                        ,unique_key
+
+
                         )values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                         """,
                             (char['name']
@@ -256,29 +256,29 @@ for char in character_json:
                             ,enc['bestAmount']
                             ,char['name'] + char['server'] + char['region']  + str(enc['encounter']['id'])
                                     ))
-            conn.commit()                    
+            conn.commit()
         except:
             print('could not insert into warcraftlogs_raid_encounter')
         try:
             for rank in zoneRankings_Allstar:
                 conn.execute("""insert or replace into warcraftlogs_raid_allstars
                                 (
-                            character_name 
-                            ,realm 
-                            ,region 
-                            
-                            ,zone 
-                            
-                            ,partition 
-                            ,spec 
-                            ,points 
-                            ,possiblePoints 
-                            ,rank 
-                            ,regionRank 
-                            ,serverRank 
-                            ,rankPercent 
-                            ,total 
-                            ,unique_key 
+                            character_name
+                            ,realm
+                            ,region
+
+                            ,zone
+
+                            ,partition
+                            ,spec
+                            ,points
+                            ,possiblePoints
+                            ,rank
+                            ,regionRank
+                            ,serverRank
+                            ,rankPercent
+                            ,total
+                            ,unique_key
 
                             )VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                             """,(
@@ -301,18 +301,18 @@ for char in character_json:
         except:
             print('could not insert into warcraftlogs_raid_allstars')
         try:
-            conn.execute("""insert or replace into warcraftlogs_raid 
+            conn.execute("""insert or replace into warcraftlogs_raid
                     (
-                    character_name 
-                        ,realm 
-                        ,region 
-                        ,bestPerformanceAverage 
-                        ,medianPerformanceAverage 
-                        ,difficulty 
-                        ,metric 
-                        ,partition 
-                        ,zone 
-                        ,unique_key 
+                    character_name
+                        ,realm
+                        ,region
+                        ,bestPerformanceAverage
+                        ,medianPerformanceAverage
+                        ,difficulty
+                        ,metric
+                        ,partition
+                        ,zone
+                        ,unique_key
 
                     )VALUES(?,?,?,?,?,?,?,?,?,?)
                     """,(
@@ -330,7 +330,7 @@ for char in character_json:
             conn.commit()
         except:
             print('could not insert into warcraftlogs_raid')
-            
+
     if r_bliz_profile.status_code== 200:
         j_profile = json.loads(r_bliz_profile.text)
         active_spec_name = j_profile['active_spec']['name']
