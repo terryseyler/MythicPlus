@@ -177,30 +177,46 @@ for char in character_json:
                 print('could not parse warcraft logs api')
             try:
                 for enc in encounterRankings:
-                    #print(enc['allStars'])
-                    if enc['allStars'] == None:
-
-                        enc_allstar_points = 0
-                        enc_allstar_possible_points=0
-                        enc_allstar_partition=0
-                        enc_allstar_rank=0
-                        enc_allstar_region_rank=0
-                        enc_allstar_server_rank=0
-                        enc_allstar_rank_percent=0
-                        enc_allstar_total=0
-                        spec='none'
-                        bestspec='none'
-                    else:
+                    try:
                         enc_allstar_points = enc['allStars']['points']
+                    except:
+                        enc_allstar_points = 0
+                    try:
                         enc_allstar_possible_points=enc['allStars']['possiblePoints']
+                    except:
+                        enc_allstar_possible_points=0
+                    try:
                         enc_allstar_partition=enc['allStars']['partition']
+                    except:
+                        enc_allstar_partition=0
+                    try:
                         enc_allstar_rank=enc['allStars']['rank']
+                    except:
+                         enc_allstar_rank=0
+                    try:
                         enc_allstar_region_rank=enc['allStars']['regionRank']
+                    except:
+                        enc_allstar_region_rank=0
+                    try:
                         enc_allstar_server_rank=enc['allStars']['serverRank']
+                    except:
+                        enc_allstar_server_rank=0
+                    try:
                         enc_allstar_rank_percent=enc['allStars']['rankPercent']
+                    except:
+                        enc_allstar_rank_percent=0
+                    try:
                         enc_allstar_total=enc['allStars']['total']
+                    except:
+                        enc_allstar_total=0
+                    try:
                         spec=enc['spec']
+                    except:
+                        spec='none'
+                    try:
                         bestspec=enc['bestSpec']
+                    except:
+                        bestspec='none'
 
                     conn.execute("""insert or replace into warcraftlogs_raid_encounter
                             (
