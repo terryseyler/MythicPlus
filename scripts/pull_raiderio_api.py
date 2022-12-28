@@ -108,6 +108,19 @@ conn.execute('delete from base_characters')
 conn.execute('delete from season_best_pivot_df_s1 where scoreboard_date = {}'.format(now_string))
 conn.commit()
 conn.close()
+vault_tier_list = ['Haunted Frostbrood Remains'
+,"Skybound Avenger's Flightwear"
+,"Lost Landcaller's Vesture"
+,"Scales of the Awakened"
+,"Stormwing Harrier's Camouflage"
+,"Bindings of the Crystal Scholar"
+,"Wrappings of the Waking Fist"
+,"Virtuous Silver Cataphract"
+,"Draconic Hierophant's Finery"
+,"Vault Delver's Toolkit"
+,"Elements of Infused Earth"
+,"Scalesworn Cultist's Habit"
+,"Stones of the Walking Mountain"]
 for char in character_json:
     conn=create_connection()
     conn.execute("""insert or ignore into season_best_pivot_df_s1 (
@@ -165,7 +178,7 @@ for char in character_json:
             'Authorization': 'Bearer ' + warcraftlogs_token
             ,'content-type':'application/json'
         })
-        print('warcraft logs diff:{} status code - {}'.format(d,r_warcraft_logs.status_code))
+        #print('warcraft logs diff:{} status code - {}'.format(d,r_warcraft_logs.status_code))
 
         if r_warcraft_logs.status_code==200:
             j_warcraft_logs = json.loads(r_warcraft_logs.text)
@@ -279,7 +292,7 @@ for char in character_json:
                              )
                 conn.commit()
             except Exception as e:
-                print(e)
+                #print(e)
                 print('could not insert into warcraftlogs_raid_encounter')
             try:
                 for rank in zoneRankings_Allstar:
@@ -323,7 +336,7 @@ for char in character_json:
                     )
                 conn.commit()
             except Exception as e:
-                print(e)
+                #print(e)
                 print('could not insert into warcraftlogs_raid_allstars')
             try:
                 conn.execute("""insert or replace into warcraftlogs_raid
@@ -354,7 +367,7 @@ for char in character_json:
                 ))
                 conn.commit()
             except Exception as e:
-                print(e)
+                #print(e)
                 print('could not insert into warcraftlogs_raid')
 
     if r_bliz_profile.status_code== 200:
@@ -446,7 +459,7 @@ for char in character_json:
             conn.commit()
             #print('new stuff')
             try:
-                print(dungeon['dungeon'])
+                #print(dungeon['dungeon'])
                 print('{0} {1}'.format(dungeon['dungeon']
                                         ,dungeon['affixes'][0]['name']))
                 num_keystone_upgrade_asterisk = np.where (dungeon['num_keystone_upgrades']==3,'***'
@@ -464,7 +477,7 @@ for char in character_json:
                                         ,total_rating
                                         ,j['name']
                                         ,now_string)
-                print(update_sql)
+                #print(update_sql)
                 conn.execute(update_sql)
                 #print('new complete')
                 conn.commit()
@@ -557,6 +570,14 @@ for char in character_json:
             derived_item_level = 0
         #print('gear')
         for item in j_equip['equipped_items']:
+            is_tier = 0
+            try:
+                if item['set']['item_set']['name'] in vault_tier_list:
+                    print("{} {}".format(item['slot'],item['set']['item_set']['name']))
+                    is_tier=1
+            except:
+                #print(e)
+                print('not tier')
             try:
                 conn.execute(
                         """INSERT OR REPLACE INTO character_gear (
@@ -573,8 +594,9 @@ for char in character_json:
                             ,active_spec_role
                             ,derived_item_level
                             ,class
+                            ,is_tier
                         )
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                         (char['name']
                         ,char['region']
                         ,char['server']
@@ -588,6 +610,7 @@ for char in character_json:
                             ,'NO ROLE'
                             ,derived_item_level
                         ,character_class
+                        ,is_tier
                             )
                         )
                 conn.commit()
@@ -737,7 +760,7 @@ conn.execute("""create table character_gear_ext as
             ,gear.unique_key
             ,gear.active_spec_name
             ,gear.active_spec_role
-
+            ,gear.is_tier
             ,item_level.slot_item_level_change
             from
             (

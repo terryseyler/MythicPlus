@@ -82,7 +82,16 @@ def index():
 @app.route('/character_list')
 def character_list():
     conn=create_connection()
-    character_list =conn.execute("""Select Name,realm,region,round(avg(derived_item_level),2) as derived_item_level
+    character_list =conn.execute("""Select Name
+    ,realm
+    ,region
+    ,round(avg(derived_item_level),2) as derived_item_level
+    ,sum(is_tier) as num_tier_pieces
+    ,sum(case when is_tier = 1 and item_slot = 'head' then item_level else 0 end) as tier_head
+    ,sum(case when is_tier = 1 and item_slot = 'legs' then item_level else 0 end) as tier_legs
+    ,sum(case when is_tier = 1 and item_slot = 'shoulders' then item_level else 0 end) as tier_shoulders
+    ,sum(case when is_tier = 1 and item_slot = 'hands' then item_level else 0 end) as tier_hands
+    ,sum(case when is_tier = 1 and item_slot = 'chest' then item_level else 0 end) as tier_chest
     from character_gear_ext
     where last_crawled_at = (select max(last_crawled_at) from character_gear_ext)
     group by Name,realm,region
@@ -237,13 +246,19 @@ def character_name(region,realm,character_name):
                                     order by completed_at desc
                                         """.format(character_name,realm,region)).fetchall()
 
-    character = cursor.execute("""select *
-                            ,last_crawled_at as last_crawled_cleansed
+    character = cursor.execute("""select name
+                            ,realm
+                            ,region
+                            ,active_spec_name
+                            ,class
+                            ,round(avg(derived_item_level),2) as derived_item_level
+                            ,sum(is_tier) as number_of_tier
                             from character_gear_ext
                             where name = '{}'
                                 and realm = '{}'
                                 and region = '{}'
                             and item_slot not in ('tabard','shirt')
-                            order by last_crawled_at desc
+                            and last_crawled_at = (select max(last_crawled_at) from character_gear_ext)
+                            group by name,realm,region,active_spec_name,class
                                 """.format(character_name,realm,region)).fetchone()
     return render_template('character.html',warcraftlogs_encounters_heroic=warcraftlogs_encounters_heroic,warcraftlogs_raid_heroic=warcraftlogs_raid_heroic,warcraftlogs_raid=warcraftlogs_raid,warcraftlogs_encounters=warcraftlogs_encounters,data=data,character=character,distinct_crawl_dates=distinct_crawl_dates,all_mythic_plus_runs=all_mythic_plus_runs)

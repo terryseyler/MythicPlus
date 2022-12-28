@@ -4,16 +4,28 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <html>
 <p><a href="{{url_for('index')}}">home</a></p>
-<table>
+<table class="char_list">
 <thead>
     <th>Name</th>
     <th>Overall Item Level</th>
+    <th>Number of Tier</th>
+    <th>Tier Helm</th>
+    <th>Tier Legs</th>
+    <th>Tier Shoulders</th>
+    <th>Tier Hands</th>
+    <th>Tier Chest</th>
 </thead>
 
 {% for char in character_list %}
 <tr>
     <td><a href="{{url_for('character_name',character_name=char['name'],realm=char['realm'],region=char['region'])}}">{{char['name']}}</a></td>
     <td>{{char['derived_item_level']}}</td>
+    <td>{{char['num_tier_pieces']}}</td>
+    <td>{{char['tier_head']}}</td>
+    <td>{{char['tier_legs']}}</td>
+    <td>{{char['tier_shoulders']}}</td>
+    <td>{{char['tier_hands']}}</td>
+    <td>{{char['tier_chest']}}</td>
 </tr>
 {% endfor %}
 </table>

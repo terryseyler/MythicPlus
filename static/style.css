@@ -12,6 +12,19 @@ table.parse {
   width: 100%;
   border: 1px solid #ddd;
 }
+.char_list tr td, .char_list thead th{
+  text-align:center
+}
+.char_list tr td:nth-child(1), .char_list thead th:nth-child(1){
+  text-align:left
+}
+table.char_list {
+  
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 75%;
+  border: 1px solid #ddd;
+}
 .parse td,th{
   text-align:center
 }
