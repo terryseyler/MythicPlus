@@ -85,17 +85,19 @@ def character_list():
     character_list =conn.execute("""Select Name
     ,realm
     ,region
-    ,round(avg(derived_item_level),2) as derived_item_level
-    ,sum(is_tier) as num_tier_pieces
-    ,sum(case when is_tier = 1 and item_slot = 'head' then item_level else 0 end) as tier_head
-    ,sum(case when is_tier = 1 and item_slot = 'legs' then item_level else 0 end) as tier_legs
-    ,sum(case when is_tier = 1 and item_slot = 'shoulders' then item_level else 0 end) as tier_shoulders
-    ,sum(case when is_tier = 1 and item_slot = 'hands' then item_level else 0 end) as tier_hands
-    ,sum(case when is_tier = 1 and item_slot = 'chest' then item_level else 0 end) as tier_chest
+    ,round(avg(case when last_crawled_at = (select max(last_crawled_at) from character_gear_ext)
+            then derived_item_level end),2) as derived_item_level
+    ,count(distinct case when is_tier = 1 then item_slot end) as num_tier_pieces
+    ,max(case when is_tier = 1 and item_slot = 'head' then item_level else 0 end) as tier_head
+    ,max(case when is_tier = 1 and item_slot = 'legs' then item_level else 0 end) as tier_legs
+    ,max(case when is_tier = 1 and item_slot = 'shoulders' then item_level else 0 end) as tier_shoulders
+    ,max(case when is_tier = 1 and item_slot = 'hands' then item_level else 0 end) as tier_hands
+    ,max(case when is_tier = 1 and item_slot = 'chest' then item_level else 0 end) as tier_chest
     from character_gear_ext
-    where last_crawled_at = (select max(last_crawled_at) from character_gear_ext)
+    --where is_tier = 1
     group by Name,realm,region
-    order by avg(derived_item_level) desc
+    order by round(avg(case when last_crawled_at = (select max(last_crawled_at) from character_gear_ext)
+            then derived_item_level end),2) desc
     """
     ).fetchall()
     return render_template('character_list.html',character_list=character_list)
