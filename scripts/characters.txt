@@ -20,6 +20,11 @@
      ,"region":"us"
     },
     {
+    "name":"Morekth"
+     ,"server":"Stormscale"
+     ,"region":"us"
+    },
+    {
     "name":"Umbrahiem"
      ,"server":"Illidan"
      ,"region":"us"
