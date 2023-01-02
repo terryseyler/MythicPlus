@@ -103,7 +103,8 @@ conn.commit()
 character_json = json.loads(data)
 
 now_string = dt.datetime.now().strftime("%Y-%m-%d")
-now__time_string = dt.datetime.now().strftime("%m-%d-%Y %H:%M")
+now_time_string = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+print("now is {}".format(now_time_string))
 conn.execute('delete from base_characters')
 conn.execute('delete from season_best_pivot_df_s1 where scoreboard_date = {}'.format(now_string))
 conn.commit()
@@ -460,8 +461,6 @@ for char in character_json:
             #print('new stuff')
             try:
                 #print(dungeon['dungeon'])
-                print('{0} {1}'.format(dungeon['dungeon']
-                                        ,dungeon['affixes'][0]['name']))
                 num_keystone_upgrade_asterisk = np.where (dungeon['num_keystone_upgrades']==3,'***'
                                             , np.where (dungeon['num_keystone_upgrades']==2,'**'
                                                         , np.where (dungeon['num_keystone_upgrades']==1,'*','')))
@@ -573,12 +572,13 @@ for char in character_json:
             is_tier = 0
             try:
                 if item['set']['item_set']['name'] in vault_tier_list:
-                    print("{} {}".format(item['slot'],item['set']['item_set']['name']))
+                    #print("{} {}".format(item['slot'],item['set']['item_set']['name']))
                     is_tier=1
             except:
-                #print(e)
-                print('not tier')
+                is_tier=0
+                #print('not tier')
             try:
+                #print("{} - {} - {} - {} - {}".format(char['name'],char['server'],char['region'],item['slot']['name'].lower().replace(" ", ""),str(derived_item_level)))
                 conn.execute(
                         """INSERT OR REPLACE INTO character_gear (
                             name
@@ -600,7 +600,7 @@ for char in character_json:
                         (char['name']
                         ,char['region']
                         ,char['server']
-                        ,now__time_string
+                        ,now_time_string
                         ,math.floor(derived_item_level)
                         ,item['slot']['name'].lower().replace(" ", "")
                         ,item['level']['value']
